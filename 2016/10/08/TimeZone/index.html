@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="iOS,审核问题," />
 
 
 
@@ -84,15 +84,16 @@
 
 
 
-<meta name="description" content="just do IT">
-<meta property="og:type" content="website">
-<meta property="og:title" content="一个想起飞的码农">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="审核被拒前几天项目审核给拒了，查了下原因：加密签名没有通过验证。瞬间秒醒加密里面有个按照当前时间获取时间戳，加进去各种加密。好吧，审核大部分在美国。不同时区会导致获取时间戳不一样。只增加了一句代码就解决了这个问题：[dateformatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@&amp;quot;GMT+0800&amp;quot;]];GMT+0">
+<meta property="og:type" content="article">
+<meta property="og:title" content="时区对获取时间戳的影响">
+<meta property="og:url" content="http://yoursite.com/2016/10/08/TimeZone/index.html">
 <meta property="og:site_name" content="一个想起飞的码农">
-<meta property="og:description" content="just do IT">
+<meta property="og:description" content="审核被拒前几天项目审核给拒了，查了下原因：加密签名没有通过验证。瞬间秒醒加密里面有个按照当前时间获取时间戳，加进去各种加密。好吧，审核大部分在美国。不同时区会导致获取时间戳不一样。只增加了一句代码就解决了这个问题：[dateformatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@&amp;quot;GMT+0800&amp;quot;]];GMT+0">
+<meta property="og:updated_time" content="2016-10-08T03:00:50.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="一个想起飞的码农">
-<meta name="twitter:description" content="just do IT">
+<meta name="twitter:title" content="时区对获取时间戳的影响">
+<meta name="twitter:description" content="审核被拒前几天项目审核给拒了，查了下原因：加密签名没有通过验证。瞬间秒醒加密里面有个按照当前时间获取时间戳，加进去各种加密。好吧，审核大部分在美国。不同时区会导致获取时间戳不一样。只增加了一句代码就解决了这个问题：[dateformatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@&amp;quot;GMT+0800&amp;quot;]];GMT+0">
 
 
 
@@ -113,9 +114,9 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2016/10/08/TimeZone/"/>
 
-  <title> 一个想起飞的码农 </title>
+  <title> 时区对获取时间戳的影响 | 一个想起飞的码农 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -136,9 +137,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left 
-   page-home 
- ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -215,9 +214,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
   
@@ -237,10 +236,7 @@
             
             
               
-                
-                <a class="post-title-link" href="/2016/10/08/TimeZone/" itemprop="url">
-                  时区对获取时间戳的影响
-                </a>
+                时区对获取时间戳的影响
               
             
           </h1>
@@ -280,9 +276,7 @@
       
 
       
-        
-          
-            <h2 id="审核被拒"><a href="#审核被拒" class="headerlink" title="审核被拒"></a>审核被拒</h2><p>前几天项目审核给拒了，查了下原因：加密签名没有通过验证。<br>瞬间秒醒加密里面有个按照当前时间获取时间戳，加进去各种加密。好吧，审核大部分在美国。不同时区会导致获取时间戳不一样。<br>只增加了一句代码就解决了这个问题：<br><code>[dateformatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@&quot;GMT+0800&quot;]];</code><br>GMT+0800 这个代表东八区，也就是北京时间所在时区，这样在获取格式化日期后，时间就切换到跟服务端一致的时区了，而不用管审核的手机在哪个时区。</p>
+        <h2 id="审核被拒"><a href="#审核被拒" class="headerlink" title="审核被拒"></a>审核被拒</h2><p>前几天项目审核给拒了，查了下原因：加密签名没有通过验证。<br>瞬间秒醒加密里面有个按照当前时间获取时间戳，加进去各种加密。好吧，审核大部分在美国。不同时区会导致获取时间戳不一样。<br>只增加了一句代码就解决了这个问题：<br><code>[dateformatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@&quot;GMT+0800&quot;]];</code><br>GMT+0800 这个代表东八区，也就是北京时间所在时区，这样在获取格式化日期后，时间就切换到跟服务端一致的时区了，而不用管审核的手机在哪个时区。</p>
 <h2 id="说点有营养的吧"><a href="#说点有营养的吧" class="headerlink" title="说点有营养的吧"></a>说点有营养的吧</h2><p>1.什么是GMT时间，什么是UTC时间<br>2.什么是时差<br>3.NSDate对应的什么时间</p>
 <p>关于GMT时间与UTC时间这里只做简单的介绍，GMT时间称为格林尼治时间，而UTC时间则称为世界标准时间，两者在概念上非常接近，UTC时间其本质是比GMT时间更加准确的世界时间；至于什么是时差按照科学上标准将地球划分24个时区，将经度为0的地方定位世界标准时间的时区，以中国北京时间东八区为例则是UTC/GMT +8，同样洛杉矶为例子当前时区为 西八区（目前正实行夏时制，时间拨快 1 小时）UTC/GMT -7，与北京时差则为晚15个小时</p>
 <p><strong><em>上代码</em></strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">NSString *dateStr = @&quot;2016-10-08 13:01&quot;;</div><div class="line">NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];</div><div class="line">[dateFormatter setDateFormat:@&quot;yyyy-MM-dd HH:mm&quot;];</div><div class="line"></div><div class="line">NSDate *date = [dateFormatter dateFromString:dateStr];</div><div class="line">WHLog(@&quot;date:%@&quot;, date);</div></pre></td></tr></table></figure></p>
@@ -292,130 +286,61 @@
 <h2 id="如何获取GMT时间"><a href="#如何获取GMT时间" class="headerlink" title="如何获取GMT时间"></a>如何获取GMT时间</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">//系统时区</div><div class="line">NSTimeZone *zone = [NSTimeZone systemTimeZone];</div><div class="line">NSData *data = [zone data];</div><div class="line">NSLog(@&quot;data:%@&quot;,data);</div><div class="line"></div><div class="line">//时间缩写</div><div class="line">NSString *abbStr = [zone abbreviation];</div><div class="line">NSLog(@&quot;abbStr:%@&quot;,abbStr);</div><div class="line"></div><div class="line">//当地时区</div><div class="line">NSTimeZone *localTime = [NSTimeZone localTimeZone];</div><div class="line">NSLog(@&quot;localTime:%@&quot;,localTime);</div><div class="line"></div><div class="line">//和格林尼治时间差</div><div class="line">NSInteger timeOff = [zone secondsFromGMT];</div><div class="line"></div><div class="line">//时差转化</div><div class="line">NSDate *timeOffDate = [date dateByAddingTimeInterval:timeOff];</div><div class="line">NSLog(@&quot;timeOffDate:%@&quot;,timeOffDate);</div></pre></td></tr></table></figure>
 <p>timeOffDate 就是正儿八经的“时间”了</p>
 
-          
+      
+    </div>
+
+    <div>
+      
         
+
       
     </div>
 
     <div>
       
-    </div>
+        
 
-    <div>
       
     </div>
 
     <footer class="post-footer">
       
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/09/28/test-post/" itemprop="url">
-                  Start
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-28T16:12:51+08:00" content="2016-09-28">
-              2016-09-28
-            </time>
-          </span>
-
+        <div class="post-tags">
           
-
+            <a href="/tags/iOS/" rel="tag">#iOS</a>
           
-            
-          
-
-          
-
-          
-          
-
+            <a href="/tags/审核问题/" rel="tag">#审核问题</a>
           
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <p><strong>iOS如何写 Hello World ~</strong><br><code>NSLog(@&quot;Hello World !&quot;);</code><br>没错，这就是我的第一篇blog，就是这么酷 !</p>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/28/test-post/" rel="next" title="Start">
+                <i class="fa fa-chevron-left"></i> Start
+              </a>
+            
+          </div>
 
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
       
 
       
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -423,6 +348,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -442,8 +371,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/logo.jpg"
@@ -486,6 +424,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#审核被拒"><span class="nav-number">1.</span> <span class="nav-text">审核被拒</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#说点有营养的吧"><span class="nav-number">2.</span> <span class="nav-text">说点有营养的吧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何获取GMT时间"><span class="nav-number">3.</span> <span class="nav-text">如何获取GMT时间</span></a></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -589,6 +538,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 
