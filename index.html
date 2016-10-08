@@ -238,6 +238,110 @@
             
               
                 
+                <a class="post-title-link" href="/2016/10/08/创业边缘/" itemprop="url">
+                  创业边缘
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-08T15:04:33+08:00" content="2016-10-08">
+              2016-10-08
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/10/08/创业边缘/" class="leancloud_visitors" data-flag-title="创业边缘">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>国庆已经过去了，合伙创业的小玩笑也过去了。</strong><br>事情源于在上海中兴的朋友的推荐，说他一同学要创业，就差程序员了。<br>见面，吃饭，聊天，一拍即合。<br>那哥们有自己的注册公司（没办公室,员工数量 == 1）,创业的想法也还不错，我这边负责组织个技术团队，本人iOS，再找了1个java，1个Android，大家前期都是兼职干。项目是关于匹配室友来租房的一个点子，具体就不展开说了。<br><strong>交流很重要</strong><br>一个号称认识投资人能轻松融资几百万的全职创业的人因为觉得讨论需求太烦而放弃了创业。或者可以直接说他就不参与具体需求讨论了，只把握产品大方向。然而什么都没说。最后我受不了这种超级折磨人的交流，退群结束了这场“创业”。</p>
+<p><strong>讲讲这次获得的经验、教训</strong><br><strong>1.创业的灵魂是创始人，如果他不靠谱，那就别跟着瞎胡闹了</strong><br>2.技术入股干活前一定要有保障，能速度签合同的要速度签，不能速度签的要先拿点报酬然后合同、项目同步进行；<br>3.带朋友一起参加别人的创业，不能跟创始人忽悠自己一样忽悠朋友，一不小心，不，很有可能项目吹了之后让朋友华丽转身的梦想破灭从而影响兄弟感情，这就不好玩了；<br>4.实际的创业过程中困难重重。尤其是自己创业的话，需要有强大的学习能力，抗压能力，具有冒险精神，以前也时不时冒出辞职创业的想法，但是这次“试水”让我明白，路还很长很长…</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/10/08/TimeZone/" itemprop="url">
                   时区对获取时间戳的影响
                 </a>
@@ -291,7 +395,7 @@
       
         
           
-            <h2 id="审核被拒"><a href="#审核被拒" class="headerlink" title="审核被拒"></a>审核被拒</h2><p>前几天项目审核给拒了，查了下原因：加密签名没有通过验证。<br>瞬间秒醒加密里面有个按照当前时间获取时间戳，加进去各种加密。好吧，审核大部分在美国。不同时区会导致获取时间戳不一样。<br>只增加了一句代码就解决了这个问题：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[dateformatter setTimeZone:[<span class="built_in">NSTimeZone</span> timeZoneWithAbbreviation:<span class="string">@"GMT+0800"</span>]];</div></pre></td></tr></table></figure></p>
+            <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>前几天项目审核给拒了，查了下原因：加密签名没有通过验证。<br>瞬间秒醒加密里面有个按照当前时间获取时间戳，加进去各种加密。好吧，审核大部分在美国。不同时区会导致获取时间戳不一样。<br>只增加了一句代码就解决了这个问题：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[dateformatter setTimeZone:[<span class="built_in">NSTimeZone</span> timeZoneWithAbbreviation:<span class="string">@"GMT+0800"</span>]];</div></pre></td></tr></table></figure></p>
 <p>GMT+0800 这个代表东八区，也就是北京时间所在时区，这样在获取格式化日期后，时间就切换到跟服务端一致的时区了，而不用管审核的手机在哪个时区。</p>
 <h2 id="说点有营养的吧"><a href="#说点有营养的吧" class="headerlink" title="说点有营养的吧"></a>说点有营养的吧</h2><p>1.什么是GMT时间，什么是UTC时间<br>2.什么是时差<br>3.NSDate对应的什么时间</p>
 <p>关于GMT时间与UTC时间这里只做简单的介绍，GMT时间称为格林尼治时间，而UTC时间则称为世界标准时间，两者在概念上非常接近，UTC时间其本质是比GMT时间更加准确的世界时间；至于什么是时差按照科学上标准将地球划分24个时区，将经度为0的地方定位世界标准时间的时区，以中国北京时间东八区为例则是UTC/GMT +8，同样洛杉矶为例子当前时区为 西八区（目前正实行夏时制，时间拨快 1 小时）UTC/GMT -7，与北京时差则为晚15个小时</p>
@@ -473,7 +577,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-count">3</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -483,7 +587,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
