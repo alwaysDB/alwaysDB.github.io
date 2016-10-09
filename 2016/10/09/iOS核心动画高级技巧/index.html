@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="iOS," />
+  <meta name="keywords" content="iOS,动画," />
 
 
 
@@ -84,16 +84,21 @@
 
 
 
-<meta name="description" content="iOS如何写 Hello World ~NSLog(@&amp;quot;Hello World !&amp;quot;);没错，这就是我的第一篇blog，就是这么酷 !">
+<meta name="description" content="《iOS核心动画高级技巧》源总结下读《iOS核心动画高级技巧》的收获
+point 1. UIView 与 CALayer 1UIView 可以处理触摸事件，可以支持基于Core Graphics绘图，可以做仿射变换（例如旋转或者缩放），或者简单的类似于滑动或者渐变的动画CALayer 类在概念上和UIView类似，同样也是一些被层级关系树管理的矩形块，同样也可以包含一些内容（像图片，文本或者背景色">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Start">
-<meta property="og:url" content="http://yoursite.com/2016/09/28/test-post/index.html">
+<meta property="og:title" content="iOS核心动画高级技巧">
+<meta property="og:url" content="http://yoursite.com/2016/10/09/iOS核心动画高级技巧/index.html">
 <meta property="og:site_name" content="一个想起飞的码农">
-<meta property="og:description" content="iOS如何写 Hello World ~NSLog(@&amp;quot;Hello World !&amp;quot;);没错，这就是我的第一篇blog，就是这么酷 !">
-<meta property="og:updated_time" content="2016-10-08T02:12:57.000Z">
+<meta property="og:description" content="《iOS核心动画高级技巧》源总结下读《iOS核心动画高级技巧》的收获
+point 1. UIView 与 CALayer 1UIView 可以处理触摸事件，可以支持基于Core Graphics绘图，可以做仿射变换（例如旋转或者缩放），或者简单的类似于滑动或者渐变的动画CALayer 类在概念上和UIView类似，同样也是一些被层级关系树管理的矩形块，同样也可以包含一些内容（像图片，文本或者背景色">
+<meta property="og:image" content="http://yoursite.com/images/img1.png">
+<meta property="og:updated_time" content="2016-10-09T07:04:09.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Start">
-<meta name="twitter:description" content="iOS如何写 Hello World ~NSLog(@&amp;quot;Hello World !&amp;quot;);没错，这就是我的第一篇blog，就是这么酷 !">
+<meta name="twitter:title" content="iOS核心动画高级技巧">
+<meta name="twitter:description" content="《iOS核心动画高级技巧》源总结下读《iOS核心动画高级技巧》的收获
+point 1. UIView 与 CALayer 1UIView 可以处理触摸事件，可以支持基于Core Graphics绘图，可以做仿射变换（例如旋转或者缩放），或者简单的类似于滑动或者渐变的动画CALayer 类在概念上和UIView类似，同样也是一些被层级关系树管理的矩形块，同样也可以包含一些内容（像图片，文本或者背景色">
+<meta name="twitter:image" content="http://yoursite.com/images/img1.png">
 
 
 
@@ -114,9 +119,9 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/09/28/test-post/"/>
+  <link rel="canonical" href="http://yoursite.com/2016/10/09/iOS核心动画高级技巧/"/>
 
-  <title> Start | 一个想起飞的码农 </title>
+  <title> iOS核心动画高级技巧 | 一个想起飞的码农 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -236,7 +241,7 @@
             
             
               
-                Start
+                iOS核心动画高级技巧
               
             
           </h1>
@@ -248,8 +253,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-28T16:12:51+08:00" content="2016-09-28">
-              2016-09-28
+            <time itemprop="dateCreated" datetime="2016-10-09T17:15:22+08:00" content="2016-10-09">
+              2016-10-09
             </time>
           </span>
 
@@ -263,7 +268,7 @@
 
           
           
-             <span id="/2016/09/28/test-post/" class="leancloud_visitors" data-flag-title="Start">
+             <span id="/2016/10/09/iOS核心动画高级技巧/" class="leancloud_visitors" data-flag-title="iOS核心动画高级技巧">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -285,7 +290,42 @@
       
 
       
-        <p><strong>iOS如何写 Hello World ~</strong><br><code>NSLog(@&quot;Hello World !&quot;);</code><br>没错，这就是我的第一篇blog，就是这么酷 !</p>
+        <p><a href="https://www.gitbook.com/book/zsisme/ios-/details" title="《iOS核心动画高级技巧》" target="_blank" rel="external">《iOS核心动画高级技巧》源</a><br><strong>总结下读《iOS核心动画高级技巧》的收获</strong></p>
+<h3 id="point-1-UIView-与-CALayer-1"><a href="#point-1-UIView-与-CALayer-1" class="headerlink" title="point 1. UIView 与 CALayer 1"></a><em>point 1.</em> UIView 与 CALayer 1</h3><p><strong>UIView</strong> 可以处理触摸事件，可以支持基于Core Graphics绘图，可以做仿射变换（例如旋转或者缩放），或者简单的类似于滑动或者渐变的动画<br><strong>CALayer</strong> 类在概念上和UIView类似，同样也是一些被层级关系树管理的矩形块，同样也可以包含一些内容（像图片，文本或者背景色），管理子图层的位置。它们有一些方法和属性用来做动画和变换。<br><strong>不同点：</strong> CALayer不处理用户的交互</p>
+<h3 id="point-2-UIView-与-CALayer-2"><a href="#point-2-UIView-与-CALayer-2" class="headerlink" title="point 2. UIView 与 CALayer 2"></a><em>point 2.</em> UIView 与 CALayer 2</h3><p>但是为什么iOS要基于UIView和CALayer提供两个平行的层级关系呢？为什么不用一个简单的层级来处理所有事情呢？原因在于要做职责分离，这样也能避免很多重复代码。在iOS和Mac OS两个平台上，事件和用户交互有很多地方的不同，基于多点触控的用户界面和基于鼠标键盘有着本质的区别，这就是为什么iOS有UIKit和UIView，但是Mac OS有AppKit和NSView的原因。他们功能上很相似，但是在实现上有着显著的区别。</p>
+<p><strong>一些UIView没有暴露出来的CALayer的功能：</strong></p>
+<ul>
+<li>阴影，圆角，带颜色的边框</li>
+<li>3D变换</li>
+<li>非矩形范围</li>
+<li>透明遮罩</li>
+<li>多级非线性动画</li>
+</ul>
+<p><strong>当满足以下条件的时候，你可能更需要使用CALayer而不是UIView:</strong></p>
+<ul>
+<li>开发同时可以在Mac OS上运行的跨平台应用</li>
+<li>使用多种CALayer的子类（见第六章，“特殊的图层“），并且不想创建额外的UIView去包封装它们所有</li>
+<li>做一些对性能特别挑剔的工作，比如对UIView一些可忽略不计的操作都会引起显著的不同（尽管如此，你可能会直接想使用OpenGL绘图）</li>
+</ul>
+<h3 id="point-3-用-CALayer-显示一张图片"><a href="#point-3-用-CALayer-显示一张图片" class="headerlink" title="point 3. 用 CALayer 显示一张图片"></a><em>point 3.</em> 用 CALayer 显示一张图片</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">CALayer</span> *layer = [<span class="built_in">CALayer</span> layer];</div><div class="line">layer.frame = <span class="built_in">CGRectMake</span>(<span class="number">30</span>, <span class="number">120</span>, <span class="number">200</span>, <span class="number">200</span>);</div><div class="line">layer.backgroundColor = [<span class="built_in">UIColor</span> blueColor].CGColor;</div><div class="line">layer.contents = (__bridge <span class="keyword">id</span>)([<span class="built_in">UIImage</span> imageNamed:<span class="string">@"me"</span>].CGImage);</div><div class="line">[<span class="keyword">self</span>.view.layer addSublayer:layer];</div></pre></td></tr></table></figure>
+<p>CALayer与contentMode对应的属性叫做 contentsGravity,它是一个NSString类型<br><strong>contentsGravity可选的常量值有以下一些：</strong></p>
+<ul>
+<li>kCAGravityCenter</li>
+<li>kCAGravityTop</li>
+<li>kCAGravityBottom</li>
+<li>kCAGravityLeft</li>
+<li>kCAGravityRight</li>
+<li>kCAGravityTopLeft</li>
+<li>kCAGravityTopRight</li>
+<li>kCAGravityBottomLeft</li>
+<li>kCAGravityBottomRight</li>
+<li>kCAGravityResize</li>
+<li>kCAGravityResizeAspect</li>
+<li>kCAGravityResizeAspectFill<br><strong>也可以用下面的字符串：</strong><br>/* A string defining how the contents of the layer is mapped into its<br>* bounds rect. Options are `center’, `top’, `bottom’, `left’,<br>* `right’, `topLeft’, `topRight’, `bottomLeft’, `bottomRight’,<br>* `resize’, `resizeAspect’, `resizeAspectFill’. The default value is<br>* `resize’. Note that “bottom” always means “Minimum Y” and “top”<br>* always means “Maximum Y”. */<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">layer.contentsGravity = kCAGravityResizeAspect;</div><div class="line">layer.contentsGravity = <span class="string">@"resizeAspect"</span>;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="point-4-CALayer-图片-的裁剪"><a href="#point-4-CALayer-图片-的裁剪" class="headerlink" title="point 4. CALayer (图片)的裁剪"></a><em>point 4.</em> CALayer (图片)的裁剪</h3><p>默认的 contentsRect 是{0, 0, 1, 1},数值都为0~1，超出或者负数会裁剪空白填充<br><img src="/images/img1.png" alt=""><br>这个可以用在一个场景：切图。加载一张大图，然后根据 contentsRect 来切小图显示。能有效提高载入性能。web前端常用。</p>
+<h3 id="point-5-锚点"><a href="#point-5-锚点" class="headerlink" title="point 5. 锚点"></a><em>point 5.</em> 锚点</h3><p>视图的center属性和图层的position属性都指定了anchorPoint相对于父图层的位置。图层的anchorPoint通过position来控制它的frame的位置，你可以认为anchorPoint是用来移动图层的把柄。<br>说白了，就是旋转的时候以这个点旋转。效果：时钟的指针动画。</p>
 
       
     </div>
@@ -310,6 +350,8 @@
           
             <a href="/tags/iOS/" rel="tag">#iOS</a>
           
+            <a href="/tags/动画/" rel="tag">#动画</a>
+          
         </div>
       
 
@@ -317,13 +359,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/10/08/创业边缘/" rel="next" title="小打小闹">
+                <i class="fa fa-chevron-left"></i> 小打小闹
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/10/08/TimeZone/" rel="prev" title="时区对获取时间戳的影响">
-                时区对获取时间戳的影响 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -430,7 +472,7 @@
               
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#point-1-UIView-与-CALayer-1"><span class="nav-number">1.</span> <span class="nav-text">point 1. UIView 与 CALayer 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#point-2-UIView-与-CALayer-2"><span class="nav-number">2.</span> <span class="nav-text">point 2. UIView 与 CALayer 2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#point-3-用-CALayer-显示一张图片"><span class="nav-number">3.</span> <span class="nav-text">point 3. 用 CALayer 显示一张图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#point-4-CALayer-图片-的裁剪"><span class="nav-number">4.</span> <span class="nav-text">point 4. CALayer (图片)的裁剪</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#point-5-锚点"><span class="nav-number">5.</span> <span class="nav-text">point 5. 锚点</span></a></li></ol></div>
             
           </div>
         </section>
