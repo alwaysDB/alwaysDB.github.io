@@ -87,15 +87,15 @@
 <meta name="description" content="《iOS核心动画高级技巧》源总结下读《iOS核心动画高级技巧》的收获
 point 1. UIView 与 CALayer 1UIView 可以处理触摸事件，可以支持基于Core Graphics绘图，可以做仿射变换（例如旋转或者缩放），或者简单的类似于滑动或者渐变的动画CALayer 类在概念上和UIView类似，同样也是一些被层级关系树管理的矩形块，同样也可以包含一些内容（像图片，文本或者背景色">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS核心动画高级技巧 · 基础">
+<meta property="og:title" content="iOS核心动画高级技巧 · 基础篇(一)">
 <meta property="og:url" content="http://yoursite.com/2016/10/08/iOS核心动画高级技巧/index.html">
 <meta property="og:site_name" content="一个想起飞的码农">
 <meta property="og:description" content="《iOS核心动画高级技巧》源总结下读《iOS核心动画高级技巧》的收获
 point 1. UIView 与 CALayer 1UIView 可以处理触摸事件，可以支持基于Core Graphics绘图，可以做仿射变换（例如旋转或者缩放），或者简单的类似于滑动或者渐变的动画CALayer 类在概念上和UIView类似，同样也是一些被层级关系树管理的矩形块，同样也可以包含一些内容（像图片，文本或者背景色">
 <meta property="og:image" content="http://yoursite.com/images/img1.png">
-<meta property="og:updated_time" content="2016-10-09T08:18:10.000Z">
+<meta property="og:updated_time" content="2016-10-10T07:45:34.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS核心动画高级技巧 · 基础">
+<meta name="twitter:title" content="iOS核心动画高级技巧 · 基础篇(一)">
 <meta name="twitter:description" content="《iOS核心动画高级技巧》源总结下读《iOS核心动画高级技巧》的收获
 point 1. UIView 与 CALayer 1UIView 可以处理触摸事件，可以支持基于Core Graphics绘图，可以做仿射变换（例如旋转或者缩放），或者简单的类似于滑动或者渐变的动画CALayer 类在概念上和UIView类似，同样也是一些被层级关系树管理的矩形块，同样也可以包含一些内容（像图片，文本或者背景色">
 <meta name="twitter:image" content="http://yoursite.com/images/img1.png">
@@ -121,7 +121,7 @@ point 1. UIView 与 CALayer 1UIView 可以处理触摸事件，可以支持基�
 
   <link rel="canonical" href="http://yoursite.com/2016/10/08/iOS核心动画高级技巧/"/>
 
-  <title> iOS核心动画高级技巧 · 基础 | 一个想起飞的码农 </title>
+  <title> iOS核心动画高级技巧 · 基础篇(一) | 一个想起飞的码农 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -241,7 +241,7 @@ point 1. UIView 与 CALayer 1UIView 可以处理触摸事件，可以支持基�
             
             
               
-                iOS核心动画高级技巧 · 基础
+                iOS核心动画高级技巧 · 基础篇(一)
               
             
           </h1>
@@ -268,7 +268,7 @@ point 1. UIView 与 CALayer 1UIView 可以处理触摸事件，可以支持基�
 
           
           
-             <span id="/2016/10/08/iOS核心动画高级技巧/" class="leancloud_visitors" data-flag-title="iOS核心动画高级技巧 · 基础">
+             <span id="/2016/10/08/iOS核心动画高级技巧/" class="leancloud_visitors" data-flag-title="iOS核心动画高级技巧 · 基础篇(一)">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -326,6 +326,7 @@ point 1. UIView 与 CALayer 1UIView 可以处理触摸事件，可以支持基�
 </ul>
 <h3 id="point-4-CALayer-图片-的裁剪"><a href="#point-4-CALayer-图片-的裁剪" class="headerlink" title="point 4. CALayer (图片)的裁剪"></a><em>point 4.</em> CALayer (图片)的裁剪</h3><p>默认的 contentsRect 是{0, 0, 1, 1},数值都为0~1，超出或者负数会裁剪空白填充<br><img src="/images/img1.png" alt=""><br>这个可以用在一个场景：切图。加载一张大图，然后根据 contentsRect 来切小图显示。能有效提高载入性能。web前端常用。</p>
 <h3 id="point-5-锚点"><a href="#point-5-锚点" class="headerlink" title="point 5. 锚点"></a><em>point 5.</em> 锚点</h3><p>视图的center属性和图层的position属性都指定了anchorPoint相对于父图层的位置。图层的anchorPoint通过position来控制它的frame的位置，你可以认为anchorPoint是用来移动图层的把柄。<br>说白了，就是旋转的时候以这个点旋转。效果：时钟的指针动画。</p>
+<h3 id="point-6-Hit-Testing"><a href="#point-6-Hit-Testing" class="headerlink" title="point 6. Hit Testing"></a><em>point 6.</em> Hit Testing</h3><p>CALayer并不关心任何响应链事件，所以不能直接处理触摸事件或者手势。但是可以用 <code>-containsPoint:</code> 和 <code>-hitTest:</code> 来处理事件</p>
 
       
     </div>
@@ -366,6 +367,10 @@ point 1. UIView 与 CALayer 1UIView 可以处理触摸事件，可以支持基�
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/10/iOS核心动画高级技巧-·-基础篇-二/" rel="prev" title="iOS核心动画高级技巧 · 基础篇(二)">
+                iOS核心动画高级技巧 · 基础篇(二) <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -433,7 +438,7 @@ point 1. UIView 与 CALayer 1UIView 可以处理触摸事件，可以支持基�
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-count">5</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -472,7 +477,7 @@ point 1. UIView 与 CALayer 1UIView 可以处理触摸事件，可以支持基�
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#point-1-UIView-与-CALayer-1"><span class="nav-number">1.</span> <span class="nav-text">point 1. UIView 与 CALayer 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#point-2-UIView-与-CALayer-2"><span class="nav-number">2.</span> <span class="nav-text">point 2. UIView 与 CALayer 2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#point-3-用-CALayer-显示一张图片"><span class="nav-number">3.</span> <span class="nav-text">point 3. 用 CALayer 显示一张图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#point-4-CALayer-图片-的裁剪"><span class="nav-number">4.</span> <span class="nav-text">point 4. CALayer (图片)的裁剪</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#point-5-锚点"><span class="nav-number">5.</span> <span class="nav-text">point 5. 锚点</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#point-1-UIView-与-CALayer-1"><span class="nav-number">1.</span> <span class="nav-text">point 1. UIView 与 CALayer 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#point-2-UIView-与-CALayer-2"><span class="nav-number">2.</span> <span class="nav-text">point 2. UIView 与 CALayer 2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#point-3-用-CALayer-显示一张图片"><span class="nav-number">3.</span> <span class="nav-text">point 3. 用 CALayer 显示一张图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#point-4-CALayer-图片-的裁剪"><span class="nav-number">4.</span> <span class="nav-text">point 4. CALayer (图片)的裁剪</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#point-5-锚点"><span class="nav-number">5.</span> <span class="nav-text">point 5. 锚点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#point-6-Hit-Testing"><span class="nav-number">6.</span> <span class="nav-text">point 6. Hit Testing</span></a></li></ol></div>
             
           </div>
         </section>

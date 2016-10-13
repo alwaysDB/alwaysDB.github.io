@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="iOS,动画," />
 
 
 
@@ -84,15 +84,16 @@
 
 
 
-<meta name="description" content="just do IT">
-<meta property="og:type" content="website">
-<meta property="og:title" content="一个想起飞的码农">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="CATiledLayer -载入超大图片解决方案有一次面试大疆，面试官问了这样一个问题：无人机拍摄的某张图片非常大，大到手机无法一次性加载、显示出来，如何解决？我：……当初还不知道 CATiledLayer 这个类……介绍：有些时候可能需要绘制一个很大的图片，常见的例子就是一个高像素的照片或者是地球表面的详细地图。iOS应用通畅运行在内存受限的设备上，所以读取整个图片到内存中是不明智的。载入大图可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS核心动画高级技巧 · 基础篇(二)">
+<meta property="og:url" content="http://yoursite.com/2016/10/10/iOS核心动画高级技巧-·-基础篇-二/index.html">
 <meta property="og:site_name" content="一个想起飞的码农">
-<meta property="og:description" content="just do IT">
+<meta property="og:description" content="CATiledLayer -载入超大图片解决方案有一次面试大疆，面试官问了这样一个问题：无人机拍摄的某张图片非常大，大到手机无法一次性加载、显示出来，如何解决？我：……当初还不知道 CATiledLayer 这个类……介绍：有些时候可能需要绘制一个很大的图片，常见的例子就是一个高像素的照片或者是地球表面的详细地图。iOS应用通畅运行在内存受限的设备上，所以读取整个图片到内存中是不明智的。载入大图可">
+<meta property="og:updated_time" content="2016-10-13T03:53:08.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="一个想起飞的码农">
-<meta name="twitter:description" content="just do IT">
+<meta name="twitter:title" content="iOS核心动画高级技巧 · 基础篇(二)">
+<meta name="twitter:description" content="CATiledLayer -载入超大图片解决方案有一次面试大疆，面试官问了这样一个问题：无人机拍摄的某张图片非常大，大到手机无法一次性加载、显示出来，如何解决？我：……当初还不知道 CATiledLayer 这个类……介绍：有些时候可能需要绘制一个很大的图片，常见的例子就是一个高像素的照片或者是地球表面的详细地图。iOS应用通畅运行在内存受限的设备上，所以读取整个图片到内存中是不明智的。载入大图可">
 
 
 
@@ -113,9 +114,9 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2016/10/10/iOS核心动画高级技巧-·-基础篇-二/"/>
 
-  <title> 一个想起飞的码农 </title>
+  <title> iOS核心动画高级技巧 · 基础篇(二) | 一个想起飞的码农 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -136,9 +137,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left 
-   page-home 
- ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -215,9 +214,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
   
@@ -237,10 +236,7 @@
             
             
               
-                
-                <a class="post-title-link" href="/2016/10/10/iOS核心动画高级技巧-·-基础篇-二/" itemprop="url">
-                  iOS核心动画高级技巧 · 基础篇(二)
-                </a>
+                iOS核心动画高级技巧 · 基础篇(二)
               
             
           </h1>
@@ -289,9 +285,7 @@
       
 
       
-        
-          
-            <h1 id="CATiledLayer-载入超大图片解决方案"><a href="#CATiledLayer-载入超大图片解决方案" class="headerlink" title="CATiledLayer -载入超大图片解决方案"></a>CATiledLayer -载入超大图片解决方案</h1><p><font color="red">有一次面试大疆，面试官问了这样一个问题：无人机拍摄的某张图片非常大，大到手机无法一次性加载、显示出来，如何解决？我：……</font><br>当初还不知道 <code>CATiledLayer</code> 这个类……<br><strong>介绍：</strong><br>有些时候可能需要绘制一个很大的图片，常见的例子就是一个高像素的照片或者是地球表面的详细地图。iOS应用通畅运行在内存受限的设备上，所以读取整个图片到内存中是不明智的。载入大图可能会相当地慢，那些对你看上去比较方便的做法（在主线程调用UIImage的-imageNamed:方法或者-imageWithContentsOfFile:方法）将会阻塞你的用户界面，至少会引起动画卡顿现象。</p>
+        <h1 id="CATiledLayer-载入超大图片解决方案"><a href="#CATiledLayer-载入超大图片解决方案" class="headerlink" title="CATiledLayer -载入超大图片解决方案"></a>CATiledLayer -载入超大图片解决方案</h1><p><font color="red">有一次面试大疆，面试官问了这样一个问题：无人机拍摄的某张图片非常大，大到手机无法一次性加载、显示出来，如何解决？我：……</font><br>当初还不知道 <code>CATiledLayer</code> 这个类……<br><strong>介绍：</strong><br>有些时候可能需要绘制一个很大的图片，常见的例子就是一个高像素的照片或者是地球表面的详细地图。iOS应用通畅运行在内存受限的设备上，所以读取整个图片到内存中是不明智的。载入大图可能会相当地慢，那些对你看上去比较方便的做法（在主线程调用UIImage的-imageNamed:方法或者-imageWithContentsOfFile:方法）将会阻塞你的用户界面，至少会引起动画卡顿现象。</p>
 <p>能高效绘制在iOS上的图片也有一个大小限制。所有显示在屏幕上的图片最终都会被转化为OpenGL纹理，同时OpenGL有一个最大的纹理尺寸（通常是2048*2048，或4096*4096，这个取决于设备型号）。如果你想在单个纹理中显示一个比这大的图，即便图片已经存在于内存中了，你仍然会遇到很大的性能问题，因为Core Animation强制用CPU处理图片而不是更快的GPU。<br><strong><font color="red">方法</font></strong><br>服务器返回一堆小图片，客户端用<code>CATiledLayer</code>处理调用，当然可以不是一次性获取所有小图片。<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span> ()</span></div><div class="line"></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">weak</span>) <span class="keyword">IBOutlet</span> <span class="built_in">UIScrollView</span> *scrollView;</div><div class="line"></div><div class="line"><span class="keyword">@end</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)viewDidLoad</div><div class="line">&#123;</div><div class="line">    [<span class="keyword">super</span> viewDidLoad];</div><div class="line">    <span class="comment">//add the tiled layer</span></div><div class="line">    <span class="built_in">CATiledLayer</span> *tileLayer = [<span class="built_in">CATiledLayer</span> layer];￼</div><div class="line">    tileLayer.frame = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">2048</span>, <span class="number">2048</span>);</div><div class="line">    tileLayer.delegate = <span class="keyword">self</span>; </div><div class="line">    [<span class="keyword">self</span>.scrollView.layer addSublayer:tileLayer];</div><div class="line"></div><div class="line">    <span class="comment">//configure the scroll view</span></div><div class="line">    <span class="keyword">self</span>.scrollView.contentSize = tileLayer.frame.size;</div><div class="line"></div><div class="line">    <span class="comment">//draw layer</span></div><div class="line">    [tileLayer setNeedsDisplay];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)drawLayer:(<span class="built_in">CATiledLayer</span> *)layer inContext:(<span class="built_in">CGContextRef</span>)ctx</div><div class="line">&#123;</div><div class="line">    <span class="comment">//determine tile coordinate</span></div><div class="line">    <span class="built_in">CGRect</span> bounds = <span class="built_in">CGContextGetClipBoundingBox</span>(ctx);</div><div class="line">    <span class="built_in">NSInteger</span> x = floor(bounds.origin.x / layer.tileSize.width);</div><div class="line">    <span class="built_in">NSInteger</span> y = floor(bounds.origin.y / layer.tileSize.height);</div><div class="line"></div><div class="line">    <span class="comment">//load tile image</span></div><div class="line">    <span class="built_in">NSString</span> *imageName = [<span class="built_in">NSString</span> stringWithFormat: <span class="string">@"Snowman_%02i_%02i"</span>, x, y];</div><div class="line">    <span class="built_in">NSString</span> *imagePath = [[<span class="built_in">NSBundle</span> mainBundle] pathForResource:imageName ofType:<span class="string">@"jpg"</span>];</div><div class="line">    <span class="built_in">UIImage</span> *tileImage = [<span class="built_in">UIImage</span> imageWithContentsOfFile:imagePath];</div><div class="line"></div><div class="line">    <span class="comment">//draw tile</span></div><div class="line">    <span class="built_in">UIGraphicsPushContext</span>(ctx);</div><div class="line">    [tileImage drawInRect:bounds];</div><div class="line">    <span class="built_in">UIGraphicsPopContext</span>();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h1 id="动画·变换"><a href="#动画·变换" class="headerlink" title="动画·变换"></a>动画·变换</h1><p>实际上 UIView 的 transform 属性是一个 CGAffineTransform 类型，用于在二维空间做旋转，缩放和平移。CGAffineTransform 是一个可以和二维空间向量（例如 CGPoint ）做乘法的3X2的矩阵。<br>CALayer 同样也有一个 transform 属性，但它的类型是 CATransform3D，而不是 CGAffineTransform。</p>
 <h2 id="旋转、缩放、平移"><a href="#旋转、缩放、平移" class="headerlink" title="旋转、缩放、平移"></a>旋转、缩放、平移</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">CGAffineTransformRotate</span>(<span class="built_in">CGAffineTransform</span> t, <span class="built_in">CGFloat</span> angle)</div><div class="line"><span class="built_in">CGAffineTransformScale</span>(<span class="built_in">CGAffineTransform</span> t, <span class="built_in">CGFloat</span> sx, <span class="built_in">CGFloat</span> sy)</div><div class="line"><span class="built_in">CGAffineTransformTranslate</span>(<span class="built_in">CGAffineTransform</span> t, <span class="built_in">CGFloat</span> tx, <span class="built_in">CGFloat</span> ty)</div></pre></td></tr></table></figure>
@@ -313,494 +307,61 @@
 <p>开源代码ReflectionView完成了一个自适应的渐变淡出效果（用CAGradientLayer和图层蒙板实现），代码见 <a href="https://github.com/nicklockwood/ReflectionView" target="_blank" rel="external">https://github.com/nicklockwood/ReflectionView</a></p>
 <h1 id="CAEAGLLayer-高性能图形绘制"><a href="#CAEAGLLayer-高性能图形绘制" class="headerlink" title="CAEAGLLayer -高性能图形绘制"></a>CAEAGLLayer -高性能图形绘制</h1><p>当iOS要处理高性能图形绘制，必要时就是OpenGL。应该说它应该是最后的杀手锏，至少对于非游戏的应用来说是的。因为相比Core Animation和UIkit框架，它不可思议地复杂。<br>它是CALayer的一个子类，用来显示任意的OpenGL图形。+</p>
 
-          
+      
+    </div>
+
+    <div>
+      
         
+
       
     </div>
 
     <div>
       
-    </div>
+        
 
-    <div>
       
     </div>
 
     <footer class="post-footer">
       
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/10/08/iOS核心动画高级技巧/" itemprop="url">
-                  iOS核心动画高级技巧 · 基础篇(一)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-10-08T17:15:22+08:00" content="2016-10-08">
-              2016-10-08
-            </time>
-          </span>
-
+        <div class="post-tags">
           
-
+            <a href="/tags/iOS/" rel="tag">#iOS</a>
           
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/10/08/iOS核心动画高级技巧/" class="leancloud_visitors" data-flag-title="iOS核心动画高级技巧 · 基础篇(一)">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
+            <a href="/tags/动画/" rel="tag">#动画</a>
           
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <p><a href="https://www.gitbook.com/book/zsisme/ios-/details" title="《iOS核心动画高级技巧》" target="_blank" rel="external">《iOS核心动画高级技巧》源</a><br><strong>总结下读《iOS核心动画高级技巧》的收获</strong></p>
-<h3 id="point-1-UIView-与-CALayer-1"><a href="#point-1-UIView-与-CALayer-1" class="headerlink" title="point 1. UIView 与 CALayer 1"></a><em>point 1.</em> UIView 与 CALayer 1</h3><p><strong>UIView</strong> 可以处理触摸事件，可以支持基于Core Graphics绘图，可以做仿射变换（例如旋转或者缩放），或者简单的类似于滑动或者渐变的动画<br><strong>CALayer</strong> 类在概念上和UIView类似，同样也是一些被层级关系树管理的矩形块，同样也可以包含一些内容（像图片，文本或者背景色），管理子图层的位置。它们有一些方法和属性用来做动画和变换。<br><strong>不同点：</strong> CALayer不处理用户的交互</p>
-<h3 id="point-2-UIView-与-CALayer-2"><a href="#point-2-UIView-与-CALayer-2" class="headerlink" title="point 2. UIView 与 CALayer 2"></a><em>point 2.</em> UIView 与 CALayer 2</h3><p>但是为什么iOS要基于UIView和CALayer提供两个平行的层级关系呢？为什么不用一个简单的层级来处理所有事情呢？原因在于要做职责分离，这样也能避免很多重复代码。在iOS和Mac OS两个平台上，事件和用户交互有很多地方的不同，基于多点触控的用户界面和基于鼠标键盘有着本质的区别，这就是为什么iOS有UIKit和UIView，但是Mac OS有AppKit和NSView的原因。他们功能上很相似，但是在实现上有着显著的区别。</p>
-<p><strong>一些UIView没有暴露出来的CALayer的功能：</strong></p>
-<ul>
-<li>阴影，圆角，带颜色的边框</li>
-<li>3D变换</li>
-<li>非矩形范围</li>
-<li>透明遮罩</li>
-<li>多级非线性动画</li>
-</ul>
-<p><strong>当满足以下条件的时候，你可能更需要使用CALayer而不是UIView:</strong></p>
-<ul>
-<li>开发同时可以在Mac OS上运行的跨平台应用</li>
-<li>使用多种CALayer的子类（见第六章，“特殊的图层“），并且不想创建额外的UIView去包封装它们所有</li>
-<li>做一些对性能特别挑剔的工作，比如对UIView一些可忽略不计的操作都会引起显著的不同（尽管如此，你可能会直接想使用OpenGL绘图）</li>
-</ul>
-<h3 id="point-3-用-CALayer-显示一张图片"><a href="#point-3-用-CALayer-显示一张图片" class="headerlink" title="point 3. 用 CALayer 显示一张图片"></a><em>point 3.</em> 用 CALayer 显示一张图片</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">CALayer</span> *layer = [<span class="built_in">CALayer</span> layer];</div><div class="line">layer.frame = <span class="built_in">CGRectMake</span>(<span class="number">30</span>, <span class="number">120</span>, <span class="number">200</span>, <span class="number">200</span>);</div><div class="line">layer.backgroundColor = [<span class="built_in">UIColor</span> blueColor].CGColor;</div><div class="line">layer.contents = (__bridge <span class="keyword">id</span>)([<span class="built_in">UIImage</span> imageNamed:<span class="string">@"me"</span>].CGImage);</div><div class="line">[<span class="keyword">self</span>.view.layer addSublayer:layer];</div></pre></td></tr></table></figure>
-<p>CALayer与contentMode对应的属性叫做 contentsGravity,它是一个NSString类型<br><strong>contentsGravity可选的常量值有以下一些：</strong></p>
-<ul>
-<li>kCAGravityCenter</li>
-<li>kCAGravityTop</li>
-<li>kCAGravityBottom</li>
-<li>kCAGravityLeft</li>
-<li>kCAGravityRight</li>
-<li>kCAGravityTopLeft</li>
-<li>kCAGravityTopRight</li>
-<li>kCAGravityBottomLeft</li>
-<li>kCAGravityBottomRight</li>
-<li>kCAGravityResize</li>
-<li>kCAGravityResizeAspect</li>
-<li>kCAGravityResizeAspectFill<br><strong>也可以用下面的字符串：</strong><br>/* A string defining how the contents of the layer is mapped into its<br>* bounds rect. Options are `center’, `top’, `bottom’, `left’,<br>* `right’, `topLeft’, `topRight’, `bottomLeft’, `bottomRight’,<br>* `resize’, `resizeAspect’, `resizeAspectFill’. The default value is<br>* `resize’. Note that “bottom” always means “Minimum Y” and “top”<br>* always means “Maximum Y”. */<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">layer.contentsGravity = kCAGravityResizeAspect;</div><div class="line">layer.contentsGravity = <span class="string">@"resizeAspect"</span>;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="point-4-CALayer-图片-的裁剪"><a href="#point-4-CALayer-图片-的裁剪" class="headerlink" title="point 4. CALayer (图片)的裁剪"></a><em>point 4.</em> CALayer (图片)的裁剪</h3><p>默认的 contentsRect 是{0, 0, 1, 1},数值都为0~1，超出或者负数会裁剪空白填充<br><img src="/images/img1.png" alt=""><br>这个可以用在一个场景：切图。加载一张大图，然后根据 contentsRect 来切小图显示。能有效提高载入性能。web前端常用。</p>
-<h3 id="point-5-锚点"><a href="#point-5-锚点" class="headerlink" title="point 5. 锚点"></a><em>point 5.</em> 锚点</h3><p>视图的center属性和图层的position属性都指定了anchorPoint相对于父图层的位置。图层的anchorPoint通过position来控制它的frame的位置，你可以认为anchorPoint是用来移动图层的把柄。<br>说白了，就是旋转的时候以这个点旋转。效果：时钟的指针动画。</p>
-<h3 id="point-6-Hit-Testing"><a href="#point-6-Hit-Testing" class="headerlink" title="point 6. Hit Testing"></a><em>point 6.</em> Hit Testing</h3><p>CALayer并不关心任何响应链事件，所以不能直接处理触摸事件或者手势。但是可以用 <code>-containsPoint:</code> 和 <code>-hitTest:</code> 来处理事件</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/10/08/iOS核心动画高级技巧/" rel="next" title="iOS核心动画高级技巧 · 基础篇(一)">
+                <i class="fa fa-chevron-left"></i> iOS核心动画高级技巧 · 基础篇(一)
+              </a>
             
-              
-                
-                <a class="post-title-link" href="/2016/10/08/创业边缘/" itemprop="url">
-                  小打小闹
-                </a>
-              
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
             
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-10-08T15:04:33+08:00" content="2016-10-08">
-              2016-10-08
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/10/08/创业边缘/" class="leancloud_visitors" data-flag-title="小打小闹">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
+          </div>
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <p>事情源于在上海中兴的朋友的推荐，说他一同学要创业，就差程序员了。<br>见面，吃饭，聊天，一拍即合。<br>那哥们有自己的注册公司（没办公室,员工数量 == 1）,创业的想法也还不错，我这边负责组织个技术团队，本人iOS，再找了1个java，1个Android，大家前期都是兼职干。项目是关于匹配室友来租房的一个点子，具体就不展开说了。<br><strong>交流很重要</strong><br>一个号称认识投资人能轻松融资几百万的全职创业的人因为觉得讨论需求太烦而放弃了创业。或者可以直接说他就不参与具体需求讨论了，只把握产品大方向。然而什么都没说。最后我受不了这种超级折磨人的交流，退群结束了这场“创业”。</p>
-<p><strong>讲讲这次获得的经验、教训</strong><br><strong>1.创业的灵魂是创始人，如果他不靠谱，那就别跟着瞎胡闹了</strong><br>2.技术入股干活前一定要有保障，能速度签合同的要速度签，不能速度签的要先拿点报酬然后合同、项目同步进行；<br>3.带朋友一起参加别人的创业，不能跟创始人忽悠自己一样忽悠朋友，一不小心，不，很有可能项目吹了之后让朋友华丽转身的梦想破灭从而影响兄弟感情，这就不好玩了；<br>4.实际的创业过程中困难重重。尤其是自己创业的话，需要有强大的学习能力，抗压能力，具有冒险精神，以前也时不时冒出辞职创业的想法，但是这次“试水”让我明白，路还很长很长…</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
-      
 
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/10/08/TimeZone/" itemprop="url">
-                  时区对获取时间戳的影响
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-10-08T10:18:15+08:00" content="2016-10-08">
-              2016-10-08
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/10/08/TimeZone/" class="leancloud_visitors" data-flag-title="时区对获取时间戳的影响">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>前几天项目审核给拒了，查了下原因：加密签名没有通过验证。<br>瞬间秒醒加密里面有个按照当前时间获取时间戳，加进去各种加密。好吧，审核大部分在美国。不同时区会导致获取时间戳不一样。<br>只增加了一句代码就解决了这个问题：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[dateformatter setTimeZone:[<span class="built_in">NSTimeZone</span> timeZoneWithAbbreviation:<span class="string">@"GMT+0800"</span>]];</div></pre></td></tr></table></figure></p>
-<p>GMT+0800 这个代表东八区，也就是北京时间所在时区，这样在获取格式化日期后，时间就切换到跟服务端一致的时区了，而不用管审核的手机在哪个时区。</p>
-<h2 id="说点有营养的吧"><a href="#说点有营养的吧" class="headerlink" title="说点有营养的吧"></a>说点有营养的吧</h2><p>1.什么是GMT时间，什么是UTC时间<br>2.什么是时差<br>3.NSDate对应的什么时间</p>
-<p>关于GMT时间与UTC时间这里只做简单的介绍，GMT时间称为格林尼治时间，而UTC时间则称为世界标准时间，两者在概念上非常接近，UTC时间其本质是比GMT时间更加准确的世界时间；至于什么是时差按照科学上标准将地球划分24个时区，将经度为0的地方定位世界标准时间的时区，以中国北京时间东八区为例则是UTC/GMT +8，同样洛杉矶为例子当前时区为 西八区（目前正实行夏时制，时间拨快 1 小时）UTC/GMT -7，与北京时差则为晚15个小时</p>
-<p><strong><em>上代码</em></strong><br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">NSString</span> *dateStr = <span class="string">@"2016-10-08 13:01"</span>;</div><div class="line"><span class="built_in">NSDateFormatter</span> *dateFormatter = [[<span class="built_in">NSDateFormatter</span> alloc] init];</div><div class="line">[dateFormatter setDateFormat:<span class="string">@"yyyy-MM-dd HH:mm"</span>];</div><div class="line"></div><div class="line"><span class="built_in">NSDate</span> *date = [dateFormatter dateFromString:dateStr];</div><div class="line">WHLog(<span class="string">@"date:%@"</span>, date);</div></pre></td></tr></table></figure></p>
-<p>输出结果：date:2016-10-08 05:01:00 +0000</p>
-<p>从输出的时间显示，为什么刚好相8个小时的时差<br>1.NSDate存储的时间格式为UTC时间,默认会将NSDate时间以系统当前时区（北京时区)转为UTC标准时间<br>2.NSDateFormatter的格式化时间的时区默认系统当前时区<br>3.事实上代码中制定的字符串时间已经制定为系统当前时区（北京时区）</p>
-<p><strong>切换时区只需要修改 dateFormatter 的 timeZone</strong></p>
-<h2 id="如何获取GMT时间"><a href="#如何获取GMT时间" class="headerlink" title="如何获取GMT时间"></a>如何获取GMT时间</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//系统时区</span></div><div class="line"><span class="built_in">NSTimeZone</span> *zone = [<span class="built_in">NSTimeZone</span> systemTimeZone];</div><div class="line"><span class="built_in">NSData</span> *data = [zone data];</div><div class="line"></div><div class="line"><span class="comment">//时间缩写</span></div><div class="line"><span class="built_in">NSString</span> *abbStr = [zone abbreviation];</div><div class="line"><span class="built_in">NSLog</span>(<span class="string">@"abbStr:%@"</span>,abbStr);</div><div class="line"></div><div class="line"><span class="comment">//当地时区</span></div><div class="line"><span class="built_in">NSTimeZone</span> *localTime = [<span class="built_in">NSTimeZone</span> localTimeZone];</div><div class="line"><span class="built_in">NSLog</span>(<span class="string">@"localTime:%@"</span>,localTime);</div><div class="line"></div><div class="line"><span class="comment">//和格林尼治时间差</span></div><div class="line"><span class="built_in">NSInteger</span> timeOff = [zone secondsFromGMT];</div><div class="line"></div><div class="line"><span class="comment">//时差转化</span></div><div class="line"><span class="built_in">NSDate</span> *timeOffDate = [date dateByAddingTimeInterval:timeOff];</div><div class="line"><span class="built_in">NSLog</span>(<span class="string">@"timeOffDate:%@"</span>,timeOffDate);</div></pre></td></tr></table></figure>
-<p>timeOffDate 就是正儿八经的“时间”了</p>
-
-          
-        
+    <div class="post-spread">
       
     </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/09/28/test-post/" itemprop="url">
-                  Start
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-09-28T16:12:51+08:00" content="2016-09-28">
-              2016-09-28
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/09/28/test-post/" class="leancloud_visitors" data-flag-title="Start">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>iOS如何写 Hello World ~</strong><br><code>NSLog(@&quot;Hello World !&quot;);</code><br>没错，这就是我的第一篇blog，就是这么酷 !</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-  </section>
-
-  
+  </div>
 
 
           </div>
@@ -808,6 +369,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -827,8 +392,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/logo.jpg"
@@ -871,6 +445,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CATiledLayer-载入超大图片解决方案"><span class="nav-number">1.</span> <span class="nav-text">CATiledLayer -载入超大图片解决方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#动画·变换"><span class="nav-number">2.</span> <span class="nav-text">动画·变换</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#旋转、缩放、平移"><span class="nav-number">2.1.</span> <span class="nav-text">旋转、缩放、平移</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3D变换"><span class="nav-number">2.2.</span> <span class="nav-text">3D变换</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CAShapeLayer"><span class="nav-number">3.</span> <span class="nav-text">CAShapeLayer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#绘制3圆角1直角矩形"><span class="nav-number">3.1.</span> <span class="nav-text">绘制3圆角1直角矩形</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CATextLayer-富文本"><span class="nav-number">4.</span> <span class="nav-text">CATextLayer -富文本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CAGradientLayer-渐变"><span class="nav-number">5.</span> <span class="nav-text">CAGradientLayer -渐变</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#多重渐变"><span class="nav-number">5.1.</span> <span class="nav-text">-多重渐变</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CAEAGLLayer-高性能图形绘制"><span class="nav-number">6.</span> <span class="nav-text">CAEAGLLayer -高性能图形绘制</span></a></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -974,6 +559,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 
