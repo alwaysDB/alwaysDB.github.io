@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="工作随想," />
+  <meta name="keywords" content="iOS,动画," />
 
 
 
@@ -84,16 +84,19 @@
 
 
 
-<meta name="description" content="事情源于在上海中兴的朋友的推荐，说他一同学要创业，就差程序员了。见面，吃饭，聊天，一拍即合。那哥们有自己的注册公司（没办公室,员工数量 == 1）,创业的想法也还不错，我这边负责组织个技术团队，本人iOS，再找了1个java，1个Android，大家前期都是兼职干。项目是关于匹配室友来租房的一个点子，具体就不展开说了。交流很重要一个号称认识投资人能轻松融资几百万的全职创业的人因为觉得讨论需求太烦而">
+<meta name="description" content="CPU VS GPU关于绘图和动画有两种处理的方式：CPU（中央处理器）和GPU（图形处理器）。在现代iOS设备中，都有可以运行不同软件的可编程芯片，但是由于历史原因，我们可以说CPU所做的工作都在软件层面，而GPU在硬件层面。
+总的来说，我们可以用软件（使用CPU）做任何事情，但是对于图像处理，通常用硬件会更快，因为GPU使用图像对高度并行浮点运算做了优化。由于某些原因，我们想尽可能把屏幕渲染的">
 <meta property="og:type" content="article">
-<meta property="og:title" content="小打小闹">
-<meta property="og:url" content="http://yoursite.com/2016/10/08/创业边缘/index.html">
+<meta property="og:title" content="iOS核心动画高级技巧 · 性能/效率">
+<meta property="og:url" content="http://yoursite.com/2016/10/14/iOS核心动画高级技巧-·-性能-效率/index.html">
 <meta property="og:site_name" content="一个想起飞的码农">
-<meta property="og:description" content="事情源于在上海中兴的朋友的推荐，说他一同学要创业，就差程序员了。见面，吃饭，聊天，一拍即合。那哥们有自己的注册公司（没办公室,员工数量 == 1）,创业的想法也还不错，我这边负责组织个技术团队，本人iOS，再找了1个java，1个Android，大家前期都是兼职干。项目是关于匹配室友来租房的一个点子，具体就不展开说了。交流很重要一个号称认识投资人能轻松融资几百万的全职创业的人因为觉得讨论需求太烦而">
-<meta property="og:updated_time" content="2016-10-09T07:06:51.000Z">
+<meta property="og:description" content="CPU VS GPU关于绘图和动画有两种处理的方式：CPU（中央处理器）和GPU（图形处理器）。在现代iOS设备中，都有可以运行不同软件的可编程芯片，但是由于历史原因，我们可以说CPU所做的工作都在软件层面，而GPU在硬件层面。
+总的来说，我们可以用软件（使用CPU）做任何事情，但是对于图像处理，通常用硬件会更快，因为GPU使用图像对高度并行浮点运算做了优化。由于某些原因，我们想尽可能把屏幕渲染的">
+<meta property="og:updated_time" content="2016-10-18T07:40:37.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="小打小闹">
-<meta name="twitter:description" content="事情源于在上海中兴的朋友的推荐，说他一同学要创业，就差程序员了。见面，吃饭，聊天，一拍即合。那哥们有自己的注册公司（没办公室,员工数量 == 1）,创业的想法也还不错，我这边负责组织个技术团队，本人iOS，再找了1个java，1个Android，大家前期都是兼职干。项目是关于匹配室友来租房的一个点子，具体就不展开说了。交流很重要一个号称认识投资人能轻松融资几百万的全职创业的人因为觉得讨论需求太烦而">
+<meta name="twitter:title" content="iOS核心动画高级技巧 · 性能/效率">
+<meta name="twitter:description" content="CPU VS GPU关于绘图和动画有两种处理的方式：CPU（中央处理器）和GPU（图形处理器）。在现代iOS设备中，都有可以运行不同软件的可编程芯片，但是由于历史原因，我们可以说CPU所做的工作都在软件层面，而GPU在硬件层面。
+总的来说，我们可以用软件（使用CPU）做任何事情，但是对于图像处理，通常用硬件会更快，因为GPU使用图像对高度并行浮点运算做了优化。由于某些原因，我们想尽可能把屏幕渲染的">
 
 
 
@@ -114,9 +117,9 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/10/08/创业边缘/"/>
+  <link rel="canonical" href="http://yoursite.com/2016/10/14/iOS核心动画高级技巧-·-性能-效率/"/>
 
-  <title> 小打小闹 | 一个想起飞的码农 </title>
+  <title> iOS核心动画高级技巧 · 性能/效率 | 一个想起飞的码农 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -236,7 +239,7 @@
             
             
               
-                小打小闹
+                iOS核心动画高级技巧 · 性能/效率
               
             
           </h1>
@@ -248,8 +251,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-10-08T15:04:33+08:00" content="2016-10-08">
-              2016-10-08
+            <time itemprop="dateCreated" datetime="2016-10-14T11:08:29+08:00" content="2016-10-14">
+              2016-10-14
             </time>
           </span>
 
@@ -263,7 +266,7 @@
 
           
           
-             <span id="/2016/10/08/创业边缘/" class="leancloud_visitors" data-flag-title="小打小闹">
+             <span id="/2016/10/14/iOS核心动画高级技巧-·-性能-效率/" class="leancloud_visitors" data-flag-title="iOS核心动画高级技巧 · 性能/效率">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -285,8 +288,16 @@
       
 
       
-        <p>事情源于在上海中兴的朋友的推荐，说他一同学要创业，就差程序员了。<br>见面，吃饭，聊天，一拍即合。<br>那哥们有自己的注册公司（没办公室,员工数量 == 1）,创业的想法也还不错，我这边负责组织个技术团队，本人iOS，再找了1个java，1个Android，大家前期都是兼职干。项目是关于匹配室友来租房的一个点子，具体就不展开说了。<br><strong>交流很重要</strong><br>一个号称认识投资人能轻松融资几百万的全职创业的人因为觉得讨论需求太烦而放弃了创业。或者可以直接说他就不参与具体需求讨论了，只把握产品大方向。然而什么都没说。最后我受不了这种超级折磨人的交流，退群结束了这场“创业”。</p>
-<p><strong>讲讲这次获得的经验、教训</strong><br><strong>1.创业的灵魂是创始人，如果他不靠谱，那就别跟着瞎胡闹了</strong><br>2.技术入股干活前一定要有保障，能速度签合同的要速度签，不能速度签的要先拿点报酬然后合同、项目同步进行；<br>3.带朋友一起参加别人的创业，不能跟创始人忽悠自己一样忽悠朋友，一不小心，不，很有可能项目吹了之后让朋友华丽转身的梦想破灭从而影响兄弟感情，这就不好玩了；<br>4.实际的创业过程中困难重重。尤其是自己创业的话，需要有强大的学习能力，抗压能力，具有冒险精神，以前也时不时冒出辞职创业的想法，但是这次“试水”让我明白，路还很长很长…</p>
+        <h1 id="CPU-VS-GPU"><a href="#CPU-VS-GPU" class="headerlink" title="CPU VS GPU"></a>CPU VS GPU</h1><p>关于绘图和动画有两种处理的方式：CPU（中央处理器）和GPU（图形处理器）。在现代iOS设备中，都有可以运行不同软件的可编程芯片，但是由于历史原因，我们可以说CPU所做的工作都在软件层面，而GPU在硬件层面。</p>
+<p>总的来说，我们可以用软件（使用CPU）做任何事情，但是对于图像处理，通常用硬件会更快，因为GPU使用图像对高度并行浮点运算做了优化。由于某些原因，我们想尽可能把屏幕渲染的工作交给硬件去处理。问题在于GPU并没有无限制处理性能，而且一旦资源用完的话，性能就会开始下降了（即使CPU并没有完全占用）</p>
+<p>大多数动画性能优化都是关于智能利用GPU和CPU，使得它们都不会超出负荷</p>
+<p><strong>动画和屏幕上组合的图层实际上被一个单独的进程管理，而不是你的应用程序。这个进程就是所谓的渲染服务。</strong>在iOS5和之前的版本是<em>SpringBoard</em>进程（同时管理着iOS的主屏）。在iOS6之后的版本中叫做<em>BackBoard</em>。</p>
+<p>我们可以使用<code>shouldRasterize</code>来缓存图层内容。这将会让图层离屏之后渲染一次然后把结果保存起来，直到下次利用的时候去更新。</p>
+<h1 id="软件绘图"><a href="#软件绘图" class="headerlink" title="软件绘图"></a>软件绘图</h1><p>在iOS中，软件绘图通常是由Core Graphics框架完成来完成。但是，在一些必要的情况下，相比Core Animation和OpenGL，Core Graphics要慢了不少。</p>
+<p>软件绘图不仅效率低，还会消耗可观的内存。CALayer只需要一些与自己相关的内存：只有它的寄宿图会消耗一定的内存空间。即使直接赋给contents属性一张图片，也不需要增加额外的照片存储大小。如果相同的一张图片被多个图层作为contents属性，那么他们将会共用同一块内存，而不是复制内存块。</p>
+<p>但是一旦你实现了CALayerDelegate协议中的-drawLayer:inContext:方法或者UIView中的-drawRect:方法（其实就是前者的包装方法），图层就创建了一个绘制上下文，这个上下文需要的大小的内存可从这个算式得出：图层宽<em>图层高</em>4字节，宽高的单位均为像素。对于一个在Retina iPad上的全屏图层来说，这个内存量就是 2048<em>1526</em>4字节，相当于12MB内存，图层每次重绘的时候都需要重新抹掉内存然后重新分配。</p>
+<h1 id="矢量图形"><a href="#矢量图形" class="headerlink" title="矢量图形"></a>矢量图形</h1><p>用Core Graphics来绘图，一般<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)touchesMoved:(<span class="built_in">NSSet</span> *)touches withEvent:(<span class="built_in">UIEvent</span> *)event</div><div class="line">&#123;</div><div class="line">    <span class="comment">//get the current point</span></div><div class="line">    <span class="built_in">CGPoint</span> point = [[touches anyObject] locationInView:<span class="keyword">self</span>];</div><div class="line"></div><div class="line">    <span class="comment">//add a new line segment to our path</span></div><div class="line">    [<span class="keyword">self</span>.path addLineToPoint:point];</div><div class="line"></div><div class="line">    <span class="comment">//redraw the view</span></div><div class="line">    [<span class="keyword">self</span> setNeedsDisplay];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)drawRect:(<span class="built_in">CGRect</span>)rect</div><div class="line">&#123;</div><div class="line">    <span class="comment">//draw path</span></div><div class="line">    [[<span class="built_in">UIColor</span> clearColor] setFill];</div><div class="line">    [[<span class="built_in">UIColor</span> redColor] setStroke];</div><div class="line">    [<span class="keyword">self</span>.path stroke];</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p> 这样实现的问题在于，我们画得越多，程序就会越慢。因为每次移动手指的时候都会重绘整个贝塞尔路径（UIBezierPath），随着路径越来越复杂，每次重绘的工作就会增加，直接导致了帧数的下降.<br> <strong>解决方法</strong><br>用<code>CAShapeLayer</code>来代替<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)touchesMoved:(<span class="built_in">NSSet</span> *)touches withEvent:(<span class="built_in">UIEvent</span> *)event</div><div class="line">&#123;</div><div class="line">    <span class="comment">//get the current point</span></div><div class="line">    <span class="built_in">CGPoint</span> point = [[touches anyObject] locationInView:<span class="keyword">self</span>];</div><div class="line"></div><div class="line">    <span class="comment">//add a new line segment to our path</span></div><div class="line">    [<span class="keyword">self</span>.path addLineToPoint:point];</div><div class="line"></div><div class="line">    <span class="comment">//update the layer with a copy of the path</span></div><div class="line">    ((<span class="built_in">CAShapeLayer</span> *)<span class="keyword">self</span>.layer).path = <span class="keyword">self</span>.path.CGPath;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -309,7 +320,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/工作随想/" rel="tag">#工作随想</a>
+            <a href="/tags/iOS/" rel="tag">#iOS</a>
+          
+            <a href="/tags/动画/" rel="tag">#动画</a>
           
         </div>
       
@@ -318,17 +331,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/10/08/TimeZone/" rel="next" title="时区对获取时间戳的影响">
-                <i class="fa fa-chevron-left"></i> 时区对获取时间戳的影响
+              <a href="/2016/10/13/iOS核心动画高级技巧-·-三/" rel="next" title="iOS核心动画高级技巧 · (三)">
+                <i class="fa fa-chevron-left"></i> iOS核心动画高级技巧 · (三)
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/10/08/iOS核心动画高级技巧/" rel="prev" title="iOS核心动画高级技巧 · (一)">
-                iOS核心动画高级技巧 · (一) <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -435,7 +444,7 @@
               
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CPU-VS-GPU"><span class="nav-number">1.</span> <span class="nav-text">CPU VS GPU</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#软件绘图"><span class="nav-number">2.</span> <span class="nav-text">软件绘图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#矢量图形"><span class="nav-number">3.</span> <span class="nav-text">矢量图形</span></a></li></ol></div>
             
           </div>
         </section>

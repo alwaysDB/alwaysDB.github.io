@@ -238,8 +238,255 @@
             
               
                 
+                <a class="post-title-link" href="/2016/10/14/iOS核心动画高级技巧-·-性能-效率/" itemprop="url">
+                  iOS核心动画高级技巧 · 性能/效率
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-14T11:08:29+08:00" content="2016-10-14">
+              2016-10-14
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/10/14/iOS核心动画高级技巧-·-性能-效率/" class="leancloud_visitors" data-flag-title="iOS核心动画高级技巧 · 性能/效率">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="CPU-VS-GPU"><a href="#CPU-VS-GPU" class="headerlink" title="CPU VS GPU"></a>CPU VS GPU</h1><p>关于绘图和动画有两种处理的方式：CPU（中央处理器）和GPU（图形处理器）。在现代iOS设备中，都有可以运行不同软件的可编程芯片，但是由于历史原因，我们可以说CPU所做的工作都在软件层面，而GPU在硬件层面。</p>
+<p>总的来说，我们可以用软件（使用CPU）做任何事情，但是对于图像处理，通常用硬件会更快，因为GPU使用图像对高度并行浮点运算做了优化。由于某些原因，我们想尽可能把屏幕渲染的工作交给硬件去处理。问题在于GPU并没有无限制处理性能，而且一旦资源用完的话，性能就会开始下降了（即使CPU并没有完全占用）</p>
+<p>大多数动画性能优化都是关于智能利用GPU和CPU，使得它们都不会超出负荷</p>
+<p><strong>动画和屏幕上组合的图层实际上被一个单独的进程管理，而不是你的应用程序。这个进程就是所谓的渲染服务。</strong>在iOS5和之前的版本是<em>SpringBoard</em>进程（同时管理着iOS的主屏）。在iOS6之后的版本中叫做<em>BackBoard</em>。</p>
+<p>我们可以使用<code>shouldRasterize</code>来缓存图层内容。这将会让图层离屏之后渲染一次然后把结果保存起来，直到下次利用的时候去更新。</p>
+<h1 id="软件绘图"><a href="#软件绘图" class="headerlink" title="软件绘图"></a>软件绘图</h1><p>在iOS中，软件绘图通常是由Core Graphics框架完成来完成。但是，在一些必要的情况下，相比Core Animation和OpenGL，Core Graphics要慢了不少。</p>
+<p>软件绘图不仅效率低，还会消耗可观的内存。CALayer只需要一些与自己相关的内存：只有它的寄宿图会消耗一定的内存空间。即使直接赋给contents属性一张图片，也不需要增加额外的照片存储大小。如果相同的一张图片被多个图层作为contents属性，那么他们将会共用同一块内存，而不是复制内存块。</p>
+<p>但是一旦你实现了CALayerDelegate协议中的-drawLayer:inContext:方法或者UIView中的-drawRect:方法（其实就是前者的包装方法），图层就创建了一个绘制上下文，这个上下文需要的大小的内存可从这个算式得出：图层宽<em>图层高</em>4字节，宽高的单位均为像素。对于一个在Retina iPad上的全屏图层来说，这个内存量就是 2048<em>1526</em>4字节，相当于12MB内存，图层每次重绘的时候都需要重新抹掉内存然后重新分配。</p>
+<h1 id="矢量图形"><a href="#矢量图形" class="headerlink" title="矢量图形"></a>矢量图形</h1><p>用Core Graphics来绘图，一般<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)touchesMoved:(<span class="built_in">NSSet</span> *)touches withEvent:(<span class="built_in">UIEvent</span> *)event</div><div class="line">&#123;</div><div class="line">    <span class="comment">//get the current point</span></div><div class="line">    <span class="built_in">CGPoint</span> point = [[touches anyObject] locationInView:<span class="keyword">self</span>];</div><div class="line"></div><div class="line">    <span class="comment">//add a new line segment to our path</span></div><div class="line">    [<span class="keyword">self</span>.path addLineToPoint:point];</div><div class="line"></div><div class="line">    <span class="comment">//redraw the view</span></div><div class="line">    [<span class="keyword">self</span> setNeedsDisplay];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)drawRect:(<span class="built_in">CGRect</span>)rect</div><div class="line">&#123;</div><div class="line">    <span class="comment">//draw path</span></div><div class="line">    [[<span class="built_in">UIColor</span> clearColor] setFill];</div><div class="line">    [[<span class="built_in">UIColor</span> redColor] setStroke];</div><div class="line">    [<span class="keyword">self</span>.path stroke];</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p> 这样实现的问题在于，我们画得越多，程序就会越慢。因为每次移动手指的时候都会重绘整个贝塞尔路径（UIBezierPath），随着路径越来越复杂，每次重绘的工作就会增加，直接导致了帧数的下降.<br> <strong>解决方法</strong><br>用<code>CAShapeLayer</code>来代替<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)touchesMoved:(<span class="built_in">NSSet</span> *)touches withEvent:(<span class="built_in">UIEvent</span> *)event</div><div class="line">&#123;</div><div class="line">    <span class="comment">//get the current point</span></div><div class="line">    <span class="built_in">CGPoint</span> point = [[touches anyObject] locationInView:<span class="keyword">self</span>];</div><div class="line"></div><div class="line">    <span class="comment">//add a new line segment to our path</span></div><div class="line">    [<span class="keyword">self</span>.path addLineToPoint:point];</div><div class="line"></div><div class="line">    <span class="comment">//update the layer with a copy of the path</span></div><div class="line">    ((<span class="built_in">CAShapeLayer</span> *)<span class="keyword">self</span>.layer).path = <span class="keyword">self</span>.path.CGPath;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/10/13/iOS核心动画高级技巧-·-三/" itemprop="url">
+                  iOS核心动画高级技巧 · (三)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-13T16:23:15+08:00" content="2016-10-13">
+              2016-10-13
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/10/13/iOS核心动画高级技巧-·-三/" class="leancloud_visitors" data-flag-title="iOS核心动画高级技巧 · (三)">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="隐式动画"><a href="#隐式动画" class="headerlink" title="隐式动画"></a>隐式动画</h1><p>Core Animation 在每个 run loop 周期中自动开始一次新的事务（run loop是iOS负责收集用户输入，处理定时器或者网络事件并且重新绘制屏幕的东西），即使你不显式的用<code>[CATransaction begin]</code>开始一次事务，任何在一次 run loop 循环中属性的改变都会被集中起来，然后做一次0.25秒的动画。</p>
+<p>CALayer的所有属性（可动画的属性）做动画，但是 UIView 把它关联的图层的这个特性关闭了.<br>也就是说，单独 CALayer 是有隐式动画的，但是 UIView 默认禁用了。</p>
+<p>隐式动画是如何实现的：</p>
+<ul>
+<li>图层首先检测它是否有委托，并且是否实现CALayerDelegate协议指定的-actionForLayer:forKey方法。如果有，直接调用并返回结果。</li>
+<li>如果没有委托，或者委托没有实现-actionForLayer:forKey方法，图层接着检查包含属性名称对应行为映射的actions字典。</li>
+<li>如果actions字典没有包含对应的属性，那么图层接着在它的style字典接着搜索属性名。</li>
+<li>最后，如果在style里面也找不到对应的行为，那么图层将会直接调用定义了每个属性的标准行为的-defaultActionForKey:方法。</li>
+</ul>
+<p>所以一轮完整的搜索结束之后，-actionForKey:要么返回空（这种情况下将不会有动画发生），要么是CAAction协议对应的对象，最后CALayer拿这个结果去对先前和当前的值做动画。</p>
+<p>于是这就解释了UIKit是如何禁用隐式动画的：每个 UIView 对它关联的图层都扮演了一个委托，并且提供了<code>-actionForLayer:forKey</code>的实现方法。当不在一个动画块的实现中，UIView 对所有图层行为返回nil，但是在动画block范围之内，它就返回了一个非空值</p>
+<h1 id="显式动画"><a href="#显式动画" class="headerlink" title="显式动画"></a>显式动画</h1><h2 id="属性动画"><a href="#属性动画" class="headerlink" title="属性动画"></a>属性动画</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</div><div class="line">    [<span class="keyword">super</span> viewDidLoad];</div><div class="line">    </div><div class="line">	<span class="comment">//create sublayer</span></div><div class="line">	<span class="keyword">self</span>.colorLayer = [<span class="built_in">CALayer</span> layer];</div><div class="line">	<span class="keyword">self</span>.colorLayer.frame = <span class="built_in">CGRectMake</span>(<span class="number">50.0</span>f, <span class="number">50.0</span>f, <span class="number">100.0</span>f, <span class="number">100.0</span>f);</div><div class="line">	<span class="keyword">self</span>.colorLayer.backgroundColor = [<span class="built_in">UIColor</span> blueColor].CGColor;</div><div class="line">	<span class="comment">//add it to our view</span></div><div class="line">	<span class="keyword">self</span>.colorLayer.contentsScale = [<span class="built_in">UIScreen</span> mainScreen].scale;</div><div class="line">	[<span class="keyword">self</span>.myView.layer addSublayer:<span class="keyword">self</span>.colorLayer];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)touchesBegan:(<span class="built_in">NSSet</span>&lt;<span class="built_in">UITouch</span> *&gt; *)touches withEvent:(<span class="built_in">UIEvent</span> *)event &#123;</div><div class="line">    [<span class="keyword">self</span> changeColor];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)changeColor</div><div class="line">&#123;</div><div class="line">	<span class="comment">//create a new random color</span></div><div class="line">	<span class="built_in">CGFloat</span> red = arc4random() / (<span class="built_in">CGFloat</span>)INT_MAX;</div><div class="line">	<span class="built_in">CGFloat</span> green = arc4random() / (<span class="built_in">CGFloat</span>)INT_MAX;</div><div class="line">	<span class="built_in">CGFloat</span> blue = arc4random() / (<span class="built_in">CGFloat</span>)INT_MAX;</div><div class="line">	<span class="built_in">UIColor</span> *color = [<span class="built_in">UIColor</span> colorWithRed:red green:green blue:blue alpha:<span class="number">1.0</span>];</div><div class="line">	<span class="comment">//create a basic animation</span></div><div class="line">	<span class="built_in">CABasicAnimation</span> *animation = [<span class="built_in">CABasicAnimation</span> animation];</div><div class="line">	animation.keyPath = <span class="string">@"backgroundColor"</span>;</div><div class="line">	animation.toValue = (__bridge <span class="keyword">id</span>)color.CGColor;</div><div class="line">	animation.delegate = <span class="keyword">self</span>;</div><div class="line">	animation.duration = <span class="number">2.0</span>f;</div><div class="line">	<span class="comment">//apply animation to layer</span></div><div class="line">	[<span class="keyword">self</span>.colorLayer addAnimation:animation forKey:<span class="literal">nil</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>动画结束的代理实现<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)animationDidStop:(<span class="built_in">CABasicAnimation</span> *)anim finished:(<span class="built_in">BOOL</span>)flag</div><div class="line">&#123;</div><div class="line">    <span class="comment">//set the backgroundColor property to match animation toValue</span></div><div class="line">    [<span class="built_in">CATransaction</span> begin];</div><div class="line">    [<span class="built_in">CATransaction</span> setDisableActions:<span class="literal">YES</span>];</div><div class="line">    <span class="keyword">self</span>.colorLayer.backgroundColor = (__bridge <span class="built_in">CGColorRef</span>)anim.toValue;</div><div class="line">    [<span class="built_in">CATransaction</span> commit];</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="关键帧动画"><a href="#关键帧动画" class="headerlink" title="关键帧动画"></a>关键帧动画</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</div><div class="line">    [<span class="keyword">super</span> viewDidLoad];</div><div class="line">  </div><div class="line">    <span class="keyword">self</span>.colorLayer = [<span class="built_in">CALayer</span> layer];</div><div class="line">    <span class="keyword">self</span>.colorLayer.frame = <span class="built_in">CGRectMake</span>(<span class="number">50.0</span>f, <span class="number">50.0</span>f, <span class="number">100.0</span>f, <span class="number">100.0</span>f);    <span class="comment">//create a keyframe animation</span></div><div class="line">    <span class="keyword">self</span>.colorLayer.backgroundColor = [<span class="built_in">UIColor</span> blueColor].CGColor;</div><div class="line">    [<span class="keyword">self</span>.view.layer addSublayer:<span class="keyword">self</span>.colorLayer];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)touchesBegan:(<span class="built_in">NSSet</span>&lt;<span class="built_in">UITouch</span> *&gt; *)touches withEvent:(<span class="built_in">UIEvent</span> *)event &#123;</div><div class="line">    </div><div class="line">    <span class="built_in">CAKeyframeAnimation</span> *animation = [<span class="built_in">CAKeyframeAnimation</span> animation];</div><div class="line">    animation.keyPath = <span class="string">@"backgroundColor"</span>;</div><div class="line">    animation.duration = <span class="number">2.0</span>;</div><div class="line">    animation.values = @[</div><div class="line">                         (__bridge <span class="keyword">id</span>)[<span class="built_in">UIColor</span> redColor].CGColor,</div><div class="line">                         (__bridge <span class="keyword">id</span>)[<span class="built_in">UIColor</span> greenColor].CGColor,</div><div class="line">                         (__bridge <span class="keyword">id</span>)[<span class="built_in">UIColor</span> orangeColor].CGColor ];</div><div class="line">    <span class="comment">//apply animation to layer</span></div><div class="line">    [<span class="keyword">self</span>.colorLayer addAnimation:animation forKey:<span class="literal">nil</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>动画会在开始的时候突然跳转到第一帧的值，然后在动画结束的时候突然恢复到原始的值。</strong></p>
+<h2 id="沿着一个贝塞尔曲线对图层做动画"><a href="#沿着一个贝塞尔曲线对图层做动画" class="headerlink" title="沿着一个贝塞尔曲线对图层做动画"></a>沿着一个贝塞尔曲线对图层做动画</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">UIBezierPath</span> *bezierPath = [<span class="built_in">UIBezierPath</span> bezierPath];</div><div class="line">[bezierPath moveToPoint:<span class="built_in">CGPointMake</span>(<span class="number">50</span>, <span class="number">100</span>)];</div><div class="line">[bezierPath addCurveToPoint:<span class="built_in">CGPointMake</span>(<span class="number">300</span>, <span class="number">200</span>) controlPoint1:<span class="built_in">CGPointMake</span>(<span class="number">120</span>, <span class="number">200</span>) controlPoint2:<span class="built_in">CGPointMake</span>(<span class="number">220</span>, <span class="number">100</span>)];</div><div class="line"><span class="built_in">CAShapeLayer</span> *shapeLayer = [<span class="built_in">CAShapeLayer</span> layer];</div><div class="line">shapeLayer.path = bezierPath.CGPath;</div><div class="line">shapeLayer.fillColor = [<span class="built_in">UIColor</span> clearColor].CGColor;</div><div class="line">shapeLayer.strokeColor = [<span class="built_in">UIColor</span> orangeColor].CGColor;</div><div class="line">shapeLayer.lineCap = kCALineCapRound;</div><div class="line">shapeLayer.lineWidth = <span class="number">4.0</span>f;</div><div class="line">[<span class="keyword">self</span>.view.layer addSublayer:shapeLayer];</div><div class="line"></div><div class="line"><span class="built_in">CALayer</span> *shipLayer = [<span class="built_in">CALayer</span> layer];</div><div class="line">shipLayer.frame = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">40</span>, <span class="number">40</span>);</div><div class="line">shipLayer.position = <span class="built_in">CGPointMake</span>(<span class="number">50</span>, <span class="number">100</span>);</div><div class="line">shipLayer.contents = (__bridge <span class="keyword">id</span>)[<span class="built_in">UIImage</span> imageNamed: <span class="string">@"me"</span>].CGImage;</div><div class="line">[<span class="keyword">self</span>.view.layer addSublayer:shipLayer];</div><div class="line"></div><div class="line"><span class="built_in">CAKeyframeAnimation</span> *anim = [<span class="built_in">CAKeyframeAnimation</span> animationWithKeyPath:<span class="string">@"position"</span>];</div><div class="line">anim.path = bezierPath.CGPath;</div><div class="line">anim.duration = <span class="number">4.0</span>f;</div><div class="line"><span class="comment">// 调整它的affineTransform来对运动方向做动画</span></div><div class="line">anim.rotationMode = kCAAnimationRotateAuto;</div><div class="line">[shipLayer addAnimation:anim forKey:<span class="literal">nil</span>];</div></pre></td></tr></table></figure>
+<h2 id="组动画"><a href="#组动画" class="headerlink" title="组动画"></a>组动画</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">CAAnimationGroup</span> *group = [[<span class="built_in">CAAnimationGroup</span> alloc] init];</div><div class="line">group.animations = @[anim, anim1];</div><div class="line">group.duration = <span class="number">4.0</span>;</div><div class="line">group.repeatCount = <span class="number">1</span>;</div><div class="line">[shipLayer addAnimation:group forKey:<span class="literal">nil</span>];</div></pre></td></tr></table></figure>
+<h2 id="过渡效果"><a href="#过渡效果" class="headerlink" title="过渡效果"></a>过渡效果</h2><pre><code class="objc"><span class="built_in">CATransition</span> *tran = [<span class="built_in">CATransition</span> animation];
+tran.type = kCATransitionFade;
+tran.duration = <span class="number">2.0</span>;
+[<span class="keyword">self</span>.imgView.layer addAnimation:tran forKey:<span class="literal">nil</span>];
+<span class="keyword">self</span>.imgView.image = [<span class="built_in">UIImage</span> imageNamed:<span class="string">@"img1"</span>];
+</code></pre>
+<h3 id="隐式过渡"><a href="#隐式过渡" class="headerlink" title="隐式过渡"></a>隐式过渡</h3><p>CATransision可以对图层任何变化平滑过渡的事实使得它成为那些不好做动画的属性图层行为的理想候选。苹果当然意识到了这点，并且当设置了CALayer的content属性的时候，CATransition的确是默认的行为。但是对于视图关联的图层，或者是其他隐式动画的行为，这个特性依然是被禁用的，但是对于你自己创建的图层，这意味着对图层contents图片做的改动都会自动附上淡入淡出的动画。</p>
+<h1 id="顺序执行一系列动画方法"><a href="#顺序执行一系列动画方法" class="headerlink" title="顺序执行一系列动画方法"></a>顺序执行一系列动画方法</h1><ol>
+<li>创建所有的动画对象，均设置delegate为self</li>
+<li>把所有的动画对象放到一个array成员里面。</li>
+<li>启动第一个动画</li>
+<li>实现animationDidStop回调，在回调里面读取array剩下的动画效果，播放。</li>
+<li>这样每个动画播放完毕后，在回调里面就播放下一个动画，直到所有的动画都播放完。</li>
+</ol>
+<h1 id="画完成后不回到动画开始前的初始状态"><a href="#画完成后不回到动画开始前的初始状态" class="headerlink" title="画完成后不回到动画开始前的初始状态"></a>画完成后不回到动画开始前的初始状态</h1><p><strong><br>使用CAAnimation子类对CALayer的属性进行显示动画时，如果需要动画完成后不回到动画开始前的初始状态，可以进行以下设置：<br><code>animation.removedOnCompletion = NO;</code><br><code>animation.fillMode = KCAFillModeForwards;</code>
+</strong></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/10/10/iOS核心动画高级技巧-·-基础篇-二/" itemprop="url">
-                  iOS核心动画高级技巧 · 基础篇(二)
+                  iOS核心动画高级技巧 · (二)
                 </a>
               
             
@@ -267,7 +514,7 @@
 
           
           
-             <span id="/2016/10/10/iOS核心动画高级技巧-·-基础篇-二/" class="leancloud_visitors" data-flag-title="iOS核心动画高级技巧 · 基础篇(二)">
+             <span id="/2016/10/10/iOS核心动画高级技巧-·-基础篇-二/" class="leancloud_visitors" data-flag-title="iOS核心动画高级技巧 · (二)">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -362,7 +609,7 @@
               
                 
                 <a class="post-title-link" href="/2016/10/08/iOS核心动画高级技巧/" itemprop="url">
-                  iOS核心动画高级技巧 · 基础篇(一)
+                  iOS核心动画高级技巧 · (一)
                 </a>
               
             
@@ -390,7 +637,7 @@
 
           
           
-             <span id="/2016/10/08/iOS核心动画高级技巧/" class="leancloud_visitors" data-flag-title="iOS核心动画高级技巧 · 基础篇(一)">
+             <span id="/2016/10/08/iOS核心动画高级技巧/" class="leancloud_visitors" data-flag-title="iOS核心动画高级技巧 · (一)">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -839,7 +1086,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-count">7</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

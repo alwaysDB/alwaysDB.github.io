@@ -1,0 +1,719 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS,动画," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="隐式动画Core Animation 在每个 run loop 周期中自动开始一次新的事务（run loop是iOS负责收集用户输入，处理定时器或者网络事件并且重新绘制屏幕的东西），即使你不显式的用[CATransaction begin]开始一次事务，任何在一次 run loop 循环中属性的改变都会被集中起来，然后做一次0.25秒的动画。
+CALayer的所有属性（可动画的属性）做动画，但是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS核心动画高级技巧 · (三)">
+<meta property="og:url" content="http://yoursite.com/2016/10/13/iOS核心动画高级技巧-·-三/index.html">
+<meta property="og:site_name" content="一个想起飞的码农">
+<meta property="og:description" content="隐式动画Core Animation 在每个 run loop 周期中自动开始一次新的事务（run loop是iOS负责收集用户输入，处理定时器或者网络事件并且重新绘制屏幕的东西），即使你不显式的用[CATransaction begin]开始一次事务，任何在一次 run loop 循环中属性的改变都会被集中起来，然后做一次0.25秒的动画。
+CALayer的所有属性（可动画的属性）做动画，但是">
+<meta property="og:updated_time" content="2016-10-14T02:30:43.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS核心动画高级技巧 · (三)">
+<meta name="twitter:description" content="隐式动画Core Animation 在每个 run loop 周期中自动开始一次新的事务（run loop是iOS负责收集用户输入，处理定时器或者网络事件并且重新绘制屏幕的东西），即使你不显式的用[CATransaction begin]开始一次事务，任何在一次 run loop 循环中属性的改变都会被集中起来，然后做一次0.25秒的动画。
+CALayer的所有属性（可动画的属性）做动画，但是">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/10/13/iOS核心动画高级技巧-·-三/"/>
+
+  <title> iOS核心动画高级技巧 · (三) | 一个想起飞的码农 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一个想起飞的码农</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">call me 小东哥</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                iOS核心动画高级技巧 · (三)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-13T16:23:15+08:00" content="2016-10-13">
+              2016-10-13
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/10/13/iOS核心动画高级技巧-·-三/" class="leancloud_visitors" data-flag-title="iOS核心动画高级技巧 · (三)">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="隐式动画"><a href="#隐式动画" class="headerlink" title="隐式动画"></a>隐式动画</h1><p>Core Animation 在每个 run loop 周期中自动开始一次新的事务（run loop是iOS负责收集用户输入，处理定时器或者网络事件并且重新绘制屏幕的东西），即使你不显式的用<code>[CATransaction begin]</code>开始一次事务，任何在一次 run loop 循环中属性的改变都会被集中起来，然后做一次0.25秒的动画。</p>
+<p>CALayer的所有属性（可动画的属性）做动画，但是 UIView 把它关联的图层的这个特性关闭了.<br>也就是说，单独 CALayer 是有隐式动画的，但是 UIView 默认禁用了。</p>
+<p>隐式动画是如何实现的：</p>
+<ul>
+<li>图层首先检测它是否有委托，并且是否实现CALayerDelegate协议指定的-actionForLayer:forKey方法。如果有，直接调用并返回结果。</li>
+<li>如果没有委托，或者委托没有实现-actionForLayer:forKey方法，图层接着检查包含属性名称对应行为映射的actions字典。</li>
+<li>如果actions字典没有包含对应的属性，那么图层接着在它的style字典接着搜索属性名。</li>
+<li>最后，如果在style里面也找不到对应的行为，那么图层将会直接调用定义了每个属性的标准行为的-defaultActionForKey:方法。</li>
+</ul>
+<p>所以一轮完整的搜索结束之后，-actionForKey:要么返回空（这种情况下将不会有动画发生），要么是CAAction协议对应的对象，最后CALayer拿这个结果去对先前和当前的值做动画。</p>
+<p>于是这就解释了UIKit是如何禁用隐式动画的：每个 UIView 对它关联的图层都扮演了一个委托，并且提供了<code>-actionForLayer:forKey</code>的实现方法。当不在一个动画块的实现中，UIView 对所有图层行为返回nil，但是在动画block范围之内，它就返回了一个非空值</p>
+<h1 id="显式动画"><a href="#显式动画" class="headerlink" title="显式动画"></a>显式动画</h1><h2 id="属性动画"><a href="#属性动画" class="headerlink" title="属性动画"></a>属性动画</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</div><div class="line">    [<span class="keyword">super</span> viewDidLoad];</div><div class="line">    </div><div class="line">	<span class="comment">//create sublayer</span></div><div class="line">	<span class="keyword">self</span>.colorLayer = [<span class="built_in">CALayer</span> layer];</div><div class="line">	<span class="keyword">self</span>.colorLayer.frame = <span class="built_in">CGRectMake</span>(<span class="number">50.0</span>f, <span class="number">50.0</span>f, <span class="number">100.0</span>f, <span class="number">100.0</span>f);</div><div class="line">	<span class="keyword">self</span>.colorLayer.backgroundColor = [<span class="built_in">UIColor</span> blueColor].CGColor;</div><div class="line">	<span class="comment">//add it to our view</span></div><div class="line">	<span class="keyword">self</span>.colorLayer.contentsScale = [<span class="built_in">UIScreen</span> mainScreen].scale;</div><div class="line">	[<span class="keyword">self</span>.myView.layer addSublayer:<span class="keyword">self</span>.colorLayer];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)touchesBegan:(<span class="built_in">NSSet</span>&lt;<span class="built_in">UITouch</span> *&gt; *)touches withEvent:(<span class="built_in">UIEvent</span> *)event &#123;</div><div class="line">    [<span class="keyword">self</span> changeColor];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)changeColor</div><div class="line">&#123;</div><div class="line">	<span class="comment">//create a new random color</span></div><div class="line">	<span class="built_in">CGFloat</span> red = arc4random() / (<span class="built_in">CGFloat</span>)INT_MAX;</div><div class="line">	<span class="built_in">CGFloat</span> green = arc4random() / (<span class="built_in">CGFloat</span>)INT_MAX;</div><div class="line">	<span class="built_in">CGFloat</span> blue = arc4random() / (<span class="built_in">CGFloat</span>)INT_MAX;</div><div class="line">	<span class="built_in">UIColor</span> *color = [<span class="built_in">UIColor</span> colorWithRed:red green:green blue:blue alpha:<span class="number">1.0</span>];</div><div class="line">	<span class="comment">//create a basic animation</span></div><div class="line">	<span class="built_in">CABasicAnimation</span> *animation = [<span class="built_in">CABasicAnimation</span> animation];</div><div class="line">	animation.keyPath = <span class="string">@"backgroundColor"</span>;</div><div class="line">	animation.toValue = (__bridge <span class="keyword">id</span>)color.CGColor;</div><div class="line">	animation.delegate = <span class="keyword">self</span>;</div><div class="line">	animation.duration = <span class="number">2.0</span>f;</div><div class="line">	<span class="comment">//apply animation to layer</span></div><div class="line">	[<span class="keyword">self</span>.colorLayer addAnimation:animation forKey:<span class="literal">nil</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>动画结束的代理实现<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)animationDidStop:(<span class="built_in">CABasicAnimation</span> *)anim finished:(<span class="built_in">BOOL</span>)flag</div><div class="line">&#123;</div><div class="line">    <span class="comment">//set the backgroundColor property to match animation toValue</span></div><div class="line">    [<span class="built_in">CATransaction</span> begin];</div><div class="line">    [<span class="built_in">CATransaction</span> setDisableActions:<span class="literal">YES</span>];</div><div class="line">    <span class="keyword">self</span>.colorLayer.backgroundColor = (__bridge <span class="built_in">CGColorRef</span>)anim.toValue;</div><div class="line">    [<span class="built_in">CATransaction</span> commit];</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="关键帧动画"><a href="#关键帧动画" class="headerlink" title="关键帧动画"></a>关键帧动画</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</div><div class="line">    [<span class="keyword">super</span> viewDidLoad];</div><div class="line">  </div><div class="line">    <span class="keyword">self</span>.colorLayer = [<span class="built_in">CALayer</span> layer];</div><div class="line">    <span class="keyword">self</span>.colorLayer.frame = <span class="built_in">CGRectMake</span>(<span class="number">50.0</span>f, <span class="number">50.0</span>f, <span class="number">100.0</span>f, <span class="number">100.0</span>f);    <span class="comment">//create a keyframe animation</span></div><div class="line">    <span class="keyword">self</span>.colorLayer.backgroundColor = [<span class="built_in">UIColor</span> blueColor].CGColor;</div><div class="line">    [<span class="keyword">self</span>.view.layer addSublayer:<span class="keyword">self</span>.colorLayer];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)touchesBegan:(<span class="built_in">NSSet</span>&lt;<span class="built_in">UITouch</span> *&gt; *)touches withEvent:(<span class="built_in">UIEvent</span> *)event &#123;</div><div class="line">    </div><div class="line">    <span class="built_in">CAKeyframeAnimation</span> *animation = [<span class="built_in">CAKeyframeAnimation</span> animation];</div><div class="line">    animation.keyPath = <span class="string">@"backgroundColor"</span>;</div><div class="line">    animation.duration = <span class="number">2.0</span>;</div><div class="line">    animation.values = @[</div><div class="line">                         (__bridge <span class="keyword">id</span>)[<span class="built_in">UIColor</span> redColor].CGColor,</div><div class="line">                         (__bridge <span class="keyword">id</span>)[<span class="built_in">UIColor</span> greenColor].CGColor,</div><div class="line">                         (__bridge <span class="keyword">id</span>)[<span class="built_in">UIColor</span> orangeColor].CGColor ];</div><div class="line">    <span class="comment">//apply animation to layer</span></div><div class="line">    [<span class="keyword">self</span>.colorLayer addAnimation:animation forKey:<span class="literal">nil</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>动画会在开始的时候突然跳转到第一帧的值，然后在动画结束的时候突然恢复到原始的值。</strong></p>
+<h2 id="沿着一个贝塞尔曲线对图层做动画"><a href="#沿着一个贝塞尔曲线对图层做动画" class="headerlink" title="沿着一个贝塞尔曲线对图层做动画"></a>沿着一个贝塞尔曲线对图层做动画</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">UIBezierPath</span> *bezierPath = [<span class="built_in">UIBezierPath</span> bezierPath];</div><div class="line">[bezierPath moveToPoint:<span class="built_in">CGPointMake</span>(<span class="number">50</span>, <span class="number">100</span>)];</div><div class="line">[bezierPath addCurveToPoint:<span class="built_in">CGPointMake</span>(<span class="number">300</span>, <span class="number">200</span>) controlPoint1:<span class="built_in">CGPointMake</span>(<span class="number">120</span>, <span class="number">200</span>) controlPoint2:<span class="built_in">CGPointMake</span>(<span class="number">220</span>, <span class="number">100</span>)];</div><div class="line"><span class="built_in">CAShapeLayer</span> *shapeLayer = [<span class="built_in">CAShapeLayer</span> layer];</div><div class="line">shapeLayer.path = bezierPath.CGPath;</div><div class="line">shapeLayer.fillColor = [<span class="built_in">UIColor</span> clearColor].CGColor;</div><div class="line">shapeLayer.strokeColor = [<span class="built_in">UIColor</span> orangeColor].CGColor;</div><div class="line">shapeLayer.lineCap = kCALineCapRound;</div><div class="line">shapeLayer.lineWidth = <span class="number">4.0</span>f;</div><div class="line">[<span class="keyword">self</span>.view.layer addSublayer:shapeLayer];</div><div class="line"></div><div class="line"><span class="built_in">CALayer</span> *shipLayer = [<span class="built_in">CALayer</span> layer];</div><div class="line">shipLayer.frame = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">40</span>, <span class="number">40</span>);</div><div class="line">shipLayer.position = <span class="built_in">CGPointMake</span>(<span class="number">50</span>, <span class="number">100</span>);</div><div class="line">shipLayer.contents = (__bridge <span class="keyword">id</span>)[<span class="built_in">UIImage</span> imageNamed: <span class="string">@"me"</span>].CGImage;</div><div class="line">[<span class="keyword">self</span>.view.layer addSublayer:shipLayer];</div><div class="line"></div><div class="line"><span class="built_in">CAKeyframeAnimation</span> *anim = [<span class="built_in">CAKeyframeAnimation</span> animationWithKeyPath:<span class="string">@"position"</span>];</div><div class="line">anim.path = bezierPath.CGPath;</div><div class="line">anim.duration = <span class="number">4.0</span>f;</div><div class="line"><span class="comment">// 调整它的affineTransform来对运动方向做动画</span></div><div class="line">anim.rotationMode = kCAAnimationRotateAuto;</div><div class="line">[shipLayer addAnimation:anim forKey:<span class="literal">nil</span>];</div></pre></td></tr></table></figure>
+<h2 id="组动画"><a href="#组动画" class="headerlink" title="组动画"></a>组动画</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">CAAnimationGroup</span> *group = [[<span class="built_in">CAAnimationGroup</span> alloc] init];</div><div class="line">group.animations = @[anim, anim1];</div><div class="line">group.duration = <span class="number">4.0</span>;</div><div class="line">group.repeatCount = <span class="number">1</span>;</div><div class="line">[shipLayer addAnimation:group forKey:<span class="literal">nil</span>];</div></pre></td></tr></table></figure>
+<h2 id="过渡效果"><a href="#过渡效果" class="headerlink" title="过渡效果"></a>过渡效果</h2><pre><code class="objc"><span class="built_in">CATransition</span> *tran = [<span class="built_in">CATransition</span> animation];
+tran.type = kCATransitionFade;
+tran.duration = <span class="number">2.0</span>;
+[<span class="keyword">self</span>.imgView.layer addAnimation:tran forKey:<span class="literal">nil</span>];
+<span class="keyword">self</span>.imgView.image = [<span class="built_in">UIImage</span> imageNamed:<span class="string">@"img1"</span>];
+</code></pre>
+<h3 id="隐式过渡"><a href="#隐式过渡" class="headerlink" title="隐式过渡"></a>隐式过渡</h3><p>CATransision可以对图层任何变化平滑过渡的事实使得它成为那些不好做动画的属性图层行为的理想候选。苹果当然意识到了这点，并且当设置了CALayer的content属性的时候，CATransition的确是默认的行为。但是对于视图关联的图层，或者是其他隐式动画的行为，这个特性依然是被禁用的，但是对于你自己创建的图层，这意味着对图层contents图片做的改动都会自动附上淡入淡出的动画。</p>
+<h1 id="顺序执行一系列动画方法"><a href="#顺序执行一系列动画方法" class="headerlink" title="顺序执行一系列动画方法"></a>顺序执行一系列动画方法</h1><ol>
+<li>创建所有的动画对象，均设置delegate为self</li>
+<li>把所有的动画对象放到一个array成员里面。</li>
+<li>启动第一个动画</li>
+<li>实现animationDidStop回调，在回调里面读取array剩下的动画效果，播放。</li>
+<li>这样每个动画播放完毕后，在回调里面就播放下一个动画，直到所有的动画都播放完。</li>
+</ol>
+<h1 id="画完成后不回到动画开始前的初始状态"><a href="#画完成后不回到动画开始前的初始状态" class="headerlink" title="画完成后不回到动画开始前的初始状态"></a>画完成后不回到动画开始前的初始状态</h1><p><strong><br>使用CAAnimation子类对CALayer的属性进行显示动画时，如果需要动画完成后不回到动画开始前的初始状态，可以进行以下设置：<br><code>animation.removedOnCompletion = NO;</code><br><code>animation.fillMode = KCAFillModeForwards;</code>
+</strong></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag">#iOS</a>
+          
+            <a href="/tags/动画/" rel="tag">#动画</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/10/iOS核心动画高级技巧-·-基础篇-二/" rel="next" title="iOS核心动画高级技巧 · (二)">
+                <i class="fa fa-chevron-left"></i> iOS核心动画高级技巧 · (二)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/14/iOS核心动画高级技巧-·-性能-效率/" rel="prev" title="iOS核心动画高级技巧 · 性能/效率">
+                iOS核心动画高级技巧 · 性能/效率 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/logo.jpg"
+               alt="yd.Z" />
+          <p class="site-author-name" itemprop="name">yd.Z</p>
+          <p class="site-description motion-element" itemprop="description">just do IT</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#隐式动画"><span class="nav-number">1.</span> <span class="nav-text">隐式动画</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#显式动画"><span class="nav-number">2.</span> <span class="nav-text">显式动画</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#属性动画"><span class="nav-number">2.1.</span> <span class="nav-text">属性动画</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关键帧动画"><span class="nav-number">2.2.</span> <span class="nav-text">关键帧动画</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#沿着一个贝塞尔曲线对图层做动画"><span class="nav-number">2.3.</span> <span class="nav-text">沿着一个贝塞尔曲线对图层做动画</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组动画"><span class="nav-number">2.4.</span> <span class="nav-text">组动画</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#过渡效果"><span class="nav-number">2.5.</span> <span class="nav-text">过渡效果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#隐式过渡"><span class="nav-number">2.5.1.</span> <span class="nav-text">隐式过渡</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#顺序执行一系列动画方法"><span class="nav-number">3.</span> <span class="nav-text">顺序执行一系列动画方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#画完成后不回到动画开始前的初始状态"><span class="nav-number">4.</span> <span class="nav-text">画完成后不回到动画开始前的初始状态</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yd.Z</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("gte1aKoqsAJGuP0LDG2UKh1Y-gzGzoHsz", "5Ba7tzK7iBpRD78SCTzL53vd");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>
