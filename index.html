@@ -65,7 +65,7 @@
 
 <link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="Hexo, NexT" />
@@ -77,7 +77,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
 
 
 
@@ -104,7 +104,7 @@
     fancybox: true,
     motion: true,
     duoshuo: {
-      userId: 0,
+      userId: '0',
       author: '博主'
     }
   };
@@ -115,10 +115,11 @@
 
   <link rel="canonical" href="http://yoursite.com/"/>
 
+
   <title> 一个想起飞的码农 </title>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -141,7 +142,7 @@
  ">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
       <div class="header-inner"><div class="site-meta ">
   
 
@@ -185,7 +186,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            归档
+            文章
           </a>
         </li>
       
@@ -226,7 +227,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
 
     
       <header class="post-header">
@@ -291,31 +292,15 @@
       
         
           
-            <h1 id="CPU-VS-GPU"><a href="#CPU-VS-GPU" class="headerlink" title="CPU VS GPU"></a>CPU VS GPU</h1><p>关于绘图和动画有两种处理的方式：CPU（中央处理器）和GPU（图形处理器）。在现代iOS设备中，都有可以运行不同软件的可编程芯片，但是由于历史原因，我们可以说CPU所做的工作都在软件层面，而GPU在硬件层面。</p>
-<p>总的来说，我们可以用软件（使用CPU）做任何事情，但是对于图像处理，通常用硬件会更快，因为GPU使用图像对高度并行浮点运算做了优化。由于某些原因，我们想尽可能把屏幕渲染的工作交给硬件去处理。问题在于GPU并没有无限制处理性能，而且一旦资源用完的话，性能就会开始下降了（即使CPU并没有完全占用）</p>
-<p>大多数动画性能优化都是关于智能利用GPU和CPU，使得它们都不会超出负荷</p>
-<p><strong>动画和屏幕上组合的图层实际上被一个单独的进程管理，而不是你的应用程序。这个进程就是所谓的渲染服务。</strong>在iOS5和之前的版本是<em>SpringBoard</em>进程（同时管理着iOS的主屏）。在iOS6之后的版本中叫做<em>BackBoard</em>。</p>
-<p>我们可以使用<code>shouldRasterize</code>来缓存图层内容。这将会让图层离屏之后渲染一次然后把结果保存起来，直到下次利用的时候去更新。</p>
-<h1 id="软件绘图"><a href="#软件绘图" class="headerlink" title="软件绘图"></a>软件绘图</h1><p>在iOS中，软件绘图通常是由Core Graphics框架完成来完成。但是，在一些必要的情况下，相比Core Animation和OpenGL，Core Graphics要慢了不少。</p>
-<p>软件绘图不仅效率低，还会消耗可观的内存。CALayer只需要一些与自己相关的内存：只有它的寄宿图会消耗一定的内存空间。即使直接赋给contents属性一张图片，也不需要增加额外的照片存储大小。如果相同的一张图片被多个图层作为contents属性，那么他们将会共用同一块内存，而不是复制内存块。</p>
-<p>但是一旦你实现了CALayerDelegate协议中的-drawLayer:inContext:方法或者UIView中的-drawRect:方法（其实就是前者的包装方法），图层就创建了一个绘制上下文，这个上下文需要的大小的内存可从这个算式得出：图层宽<em>图层高</em>4字节，宽高的单位均为像素。对于一个在Retina iPad上的全屏图层来说，这个内存量就是 2048<em>1526</em>4字节，相当于12MB内存，图层每次重绘的时候都需要重新抹掉内存然后重新分配。</p>
-<h1 id="矢量图形"><a href="#矢量图形" class="headerlink" title="矢量图形"></a>矢量图形</h1><p>用Core Graphics来绘图，一般<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)touchesMoved:(<span class="built_in">NSSet</span> *)touches withEvent:(<span class="built_in">UIEvent</span> *)event</div><div class="line">&#123;</div><div class="line">    <span class="comment">//get the current point</span></div><div class="line">    <span class="built_in">CGPoint</span> point = [[touches anyObject] locationInView:<span class="keyword">self</span>];</div><div class="line"></div><div class="line">    <span class="comment">//add a new line segment to our path</span></div><div class="line">    [<span class="keyword">self</span>.path addLineToPoint:point];</div><div class="line"></div><div class="line">    <span class="comment">//redraw the view</span></div><div class="line">    [<span class="keyword">self</span> setNeedsDisplay];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)drawRect:(<span class="built_in">CGRect</span>)rect</div><div class="line">&#123;</div><div class="line">    <span class="comment">//draw path</span></div><div class="line">    [[<span class="built_in">UIColor</span> clearColor] setFill];</div><div class="line">    [[<span class="built_in">UIColor</span> redColor] setStroke];</div><div class="line">    [<span class="keyword">self</span>.path stroke];</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p> 这样实现的问题在于，我们画得越多，程序就会越慢。因为每次移动手指的时候都会重绘整个贝塞尔路径（UIBezierPath），随着路径越来越复杂，每次重绘的工作就会增加，直接导致了帧数的下降.<br> <strong>解决方法</strong><br>用<code>CAShapeLayer</code>来代替<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)touchesMoved:(<span class="built_in">NSSet</span> *)touches withEvent:(<span class="built_in">UIEvent</span> *)event</div><div class="line">&#123;</div><div class="line">    <span class="comment">//get the current point</span></div><div class="line">    <span class="built_in">CGPoint</span> point = [[touches anyObject] locationInView:<span class="keyword">self</span>];</div><div class="line"></div><div class="line">    <span class="comment">//add a new line segment to our path</span></div><div class="line">    [<span class="keyword">self</span>.path addLineToPoint:point];</div><div class="line"></div><div class="line">    <span class="comment">//update the layer with a copy of the path</span></div><div class="line">    ((<span class="built_in">CAShapeLayer</span> *)<span class="keyword">self</span>.layer).path = <span class="keyword">self</span>.path.CGPath;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h1 id="脏矩形"><a href="#脏矩形" class="headerlink" title="脏矩形"></a>脏矩形</h1><p>为了减少不必要的绘制，Mac OS和iOS设备将会把屏幕区分为需要重绘的区域和不需要重绘的区域。那些需要重绘的部分被称作『脏区域』.</p>
-<p>当你检测到指定视图或图层的指定部分需要被重绘，你直接调用<code>-setNeedsDisplayInRect:</code>来标记它，然后将影响到的矩形作为参数传入。这样就会在一次视图刷新时调用视图的<code>-drawRect:</code>或图层代理的<code>-drawLayer:inContext:</code>方法。</p>
-<p>传入<code>-drawLayer:inContext:</code>的<code>CGContext</code>参数会自动被裁切以适应对应的矩形。为了确定矩形的尺寸大小，你可以用<code>CGContextGetClipBoundingBox()</code>方法来从上下文获得大小。调用<code>-drawRect()</code>会更简单，因为<code>CGRect</code>会作为参数直接传入。</p>
-<p>你应该将你的绘制工作限制在这个矩形中。任何在此区域之外的绘制都将被自动无视，但是这样CPU花在计算和抛弃上的时间就浪费了，实在是太不值得了。</p>
-<p>相比依赖于 Core Graphics 为你重绘，裁剪出自己的绘制区域可能会让你避免不必要的操作。那就是说，如果你的裁剪逻辑相当复杂，那还是让 Core Graphics 来代劳吧，记住：当你能高效完成的时候才这样做。</p>
-<h1 id="离屏渲染"><a href="#离屏渲染" class="headerlink" title="离屏渲染"></a>离屏渲染</h1><p>当图层属性的混合体被指定为在未预合成之前不能直接在屏幕中绘制时，屏幕外渲染就被唤起了。屏幕外渲染并不意味着软件绘制，但是它意味着图层必须在被显示之前在一个屏幕外上下文中被渲染（不论CPU还是GPU）。图层的以下属性将会触发屏幕外绘制：</p>
-<ul>
-<li>圆角（当和maskToBounds一起使用时）</li>
-<li>图层蒙板</li>
-<li>阴影<br>屏幕外渲染和我们启用光栅化时相似，除了它并没有像光栅化图层那么消耗大，子图层并没有被影响到，而且结果也没有被缓存，所以不会有长期的内存占用。但是，如果太多图层在屏幕外渲染依然会影响到性能。<br>有时候我们可以把那些需要屏幕外绘制的图层开启光栅化以作为一个优化方式，前提是这些图层并不会被频繁地重绘。</li>
-</ul>
-<p>对于那些需要动画而且要在屏幕外渲染的图层来说，你可以用CAShapeLayer，contentsCenter或者shadowPath来获得同样的表现而且较少地影响到性能。</p>
-<h1 id="CAShapeLayer"><a href="#CAShapeLayer" class="headerlink" title="CAShapeLayer"></a>CAShapeLayer</h1><p><code>cornerRadius</code>和<code>maskToBounds</code>独立作用的时候都不会有太大的性能问题，但是当他俩结合在一起，就触发了屏幕外渲染。有时候你想显示圆角并沿着图层裁切子图层的时候，你可能会发现你并不需要沿着圆角裁切，这个情况下用CAShapeLayer就可以避免这个问题了。<br>你想要的只是圆角且沿着矩形边界裁切，同时还不希望引起性能问题。其实你可以用现成的UIBezierPath的构造器<code>+bezierPathWithRoundedRect:cornerRadius:</code>.这样做并不会比直接用<code>cornerRadius</code>更快，但是它避免了性能问题。</p>
+          CPU VS GPU关于绘图和动画有两种处理的方式：CPU（中央处理器）和GPU（图形处理器）。在现代iOS设备中，都有可以运行不同软件的可编程芯片，但是由于历史原因，我们可以说CPU所做的工作都在软件层面，而GPU在硬件层面。
+总的来说，我们可以用软件（使用CPU）做任何事情，但是对于图像处理，通
+          ...
 
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/14/iOS核心动画高级技巧-·-性能-效率/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -351,7 +336,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
 
     
       <header class="post-header">
@@ -416,41 +401,14 @@
       
         
           
-            <h1 id="隐式动画"><a href="#隐式动画" class="headerlink" title="隐式动画"></a>隐式动画</h1><p>Core Animation 在每个 run loop 周期中自动开始一次新的事务（run loop是iOS负责收集用户输入，处理定时器或者网络事件并且重新绘制屏幕的东西），即使你不显式的用<code>[CATransaction begin]</code>开始一次事务，任何在一次 run loop 循环中属性的改变都会被集中起来，然后做一次0.25秒的动画。</p>
-<p>CALayer的所有属性（可动画的属性）做动画，但是 UIView 把它关联的图层的这个特性关闭了.<br>也就是说，单独 CALayer 是有隐式动画的，但是 UIView 默认禁用了。</p>
-<p>隐式动画是如何实现的：</p>
-<ul>
-<li>图层首先检测它是否有委托，并且是否实现CALayerDelegate协议指定的-actionForLayer:forKey方法。如果有，直接调用并返回结果。</li>
-<li>如果没有委托，或者委托没有实现-actionForLayer:forKey方法，图层接着检查包含属性名称对应行为映射的actions字典。</li>
-<li>如果actions字典没有包含对应的属性，那么图层接着在它的style字典接着搜索属性名。</li>
-<li>最后，如果在style里面也找不到对应的行为，那么图层将会直接调用定义了每个属性的标准行为的-defaultActionForKey:方法。</li>
-</ul>
-<p>所以一轮完整的搜索结束之后，-actionForKey:要么返回空（这种情况下将不会有动画发生），要么是CAAction协议对应的对象，最后CALayer拿这个结果去对先前和当前的值做动画。</p>
-<p>于是这就解释了UIKit是如何禁用隐式动画的：每个 UIView 对它关联的图层都扮演了一个委托，并且提供了<code>-actionForLayer:forKey</code>的实现方法。当不在一个动画块的实现中，UIView 对所有图层行为返回nil，但是在动画block范围之内，它就返回了一个非空值</p>
-<h1 id="显式动画"><a href="#显式动画" class="headerlink" title="显式动画"></a>显式动画</h1><h2 id="属性动画"><a href="#属性动画" class="headerlink" title="属性动画"></a>属性动画</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</div><div class="line">    [<span class="keyword">super</span> viewDidLoad];</div><div class="line">    </div><div class="line">	<span class="comment">//create sublayer</span></div><div class="line">	<span class="keyword">self</span>.colorLayer = [<span class="built_in">CALayer</span> layer];</div><div class="line">	<span class="keyword">self</span>.colorLayer.frame = <span class="built_in">CGRectMake</span>(<span class="number">50.0</span>f, <span class="number">50.0</span>f, <span class="number">100.0</span>f, <span class="number">100.0</span>f);</div><div class="line">	<span class="keyword">self</span>.colorLayer.backgroundColor = [<span class="built_in">UIColor</span> blueColor].CGColor;</div><div class="line">	<span class="comment">//add it to our view</span></div><div class="line">	<span class="keyword">self</span>.colorLayer.contentsScale = [<span class="built_in">UIScreen</span> mainScreen].scale;</div><div class="line">	[<span class="keyword">self</span>.myView.layer addSublayer:<span class="keyword">self</span>.colorLayer];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)touchesBegan:(<span class="built_in">NSSet</span>&lt;<span class="built_in">UITouch</span> *&gt; *)touches withEvent:(<span class="built_in">UIEvent</span> *)event &#123;</div><div class="line">    [<span class="keyword">self</span> changeColor];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)changeColor</div><div class="line">&#123;</div><div class="line">	<span class="comment">//create a new random color</span></div><div class="line">	<span class="built_in">CGFloat</span> red = arc4random() / (<span class="built_in">CGFloat</span>)INT_MAX;</div><div class="line">	<span class="built_in">CGFloat</span> green = arc4random() / (<span class="built_in">CGFloat</span>)INT_MAX;</div><div class="line">	<span class="built_in">CGFloat</span> blue = arc4random() / (<span class="built_in">CGFloat</span>)INT_MAX;</div><div class="line">	<span class="built_in">UIColor</span> *color = [<span class="built_in">UIColor</span> colorWithRed:red green:green blue:blue alpha:<span class="number">1.0</span>];</div><div class="line">	<span class="comment">//create a basic animation</span></div><div class="line">	<span class="built_in">CABasicAnimation</span> *animation = [<span class="built_in">CABasicAnimation</span> animation];</div><div class="line">	animation.keyPath = <span class="string">@"backgroundColor"</span>;</div><div class="line">	animation.toValue = (__bridge <span class="keyword">id</span>)color.CGColor;</div><div class="line">	animation.delegate = <span class="keyword">self</span>;</div><div class="line">	animation.duration = <span class="number">2.0</span>f;</div><div class="line">	<span class="comment">//apply animation to layer</span></div><div class="line">	[<span class="keyword">self</span>.colorLayer addAnimation:animation forKey:<span class="literal">nil</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>动画结束的代理实现<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)animationDidStop:(<span class="built_in">CABasicAnimation</span> *)anim finished:(<span class="built_in">BOOL</span>)flag</div><div class="line">&#123;</div><div class="line">    <span class="comment">//set the backgroundColor property to match animation toValue</span></div><div class="line">    [<span class="built_in">CATransaction</span> begin];</div><div class="line">    [<span class="built_in">CATransaction</span> setDisableActions:<span class="literal">YES</span>];</div><div class="line">    <span class="keyword">self</span>.colorLayer.backgroundColor = (__bridge <span class="built_in">CGColorRef</span>)anim.toValue;</div><div class="line">    [<span class="built_in">CATransaction</span> commit];</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h2 id="关键帧动画"><a href="#关键帧动画" class="headerlink" title="关键帧动画"></a>关键帧动画</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</div><div class="line">    [<span class="keyword">super</span> viewDidLoad];</div><div class="line">  </div><div class="line">    <span class="keyword">self</span>.colorLayer = [<span class="built_in">CALayer</span> layer];</div><div class="line">    <span class="keyword">self</span>.colorLayer.frame = <span class="built_in">CGRectMake</span>(<span class="number">50.0</span>f, <span class="number">50.0</span>f, <span class="number">100.0</span>f, <span class="number">100.0</span>f);    <span class="comment">//create a keyframe animation</span></div><div class="line">    <span class="keyword">self</span>.colorLayer.backgroundColor = [<span class="built_in">UIColor</span> blueColor].CGColor;</div><div class="line">    [<span class="keyword">self</span>.view.layer addSublayer:<span class="keyword">self</span>.colorLayer];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)touchesBegan:(<span class="built_in">NSSet</span>&lt;<span class="built_in">UITouch</span> *&gt; *)touches withEvent:(<span class="built_in">UIEvent</span> *)event &#123;</div><div class="line">    </div><div class="line">    <span class="built_in">CAKeyframeAnimation</span> *animation = [<span class="built_in">CAKeyframeAnimation</span> animation];</div><div class="line">    animation.keyPath = <span class="string">@"backgroundColor"</span>;</div><div class="line">    animation.duration = <span class="number">2.0</span>;</div><div class="line">    animation.values = @[</div><div class="line">                         (__bridge <span class="keyword">id</span>)[<span class="built_in">UIColor</span> redColor].CGColor,</div><div class="line">                         (__bridge <span class="keyword">id</span>)[<span class="built_in">UIColor</span> greenColor].CGColor,</div><div class="line">                         (__bridge <span class="keyword">id</span>)[<span class="built_in">UIColor</span> orangeColor].CGColor ];</div><div class="line">    <span class="comment">//apply animation to layer</span></div><div class="line">    [<span class="keyword">self</span>.colorLayer addAnimation:animation forKey:<span class="literal">nil</span>];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><strong>动画会在开始的时候突然跳转到第一帧的值，然后在动画结束的时候突然恢复到原始的值。</strong></p>
-<h2 id="沿着一个贝塞尔曲线对图层做动画"><a href="#沿着一个贝塞尔曲线对图层做动画" class="headerlink" title="沿着一个贝塞尔曲线对图层做动画"></a>沿着一个贝塞尔曲线对图层做动画</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">UIBezierPath</span> *bezierPath = [<span class="built_in">UIBezierPath</span> bezierPath];</div><div class="line">[bezierPath moveToPoint:<span class="built_in">CGPointMake</span>(<span class="number">50</span>, <span class="number">100</span>)];</div><div class="line">[bezierPath addCurveToPoint:<span class="built_in">CGPointMake</span>(<span class="number">300</span>, <span class="number">200</span>) controlPoint1:<span class="built_in">CGPointMake</span>(<span class="number">120</span>, <span class="number">200</span>) controlPoint2:<span class="built_in">CGPointMake</span>(<span class="number">220</span>, <span class="number">100</span>)];</div><div class="line"><span class="built_in">CAShapeLayer</span> *shapeLayer = [<span class="built_in">CAShapeLayer</span> layer];</div><div class="line">shapeLayer.path = bezierPath.CGPath;</div><div class="line">shapeLayer.fillColor = [<span class="built_in">UIColor</span> clearColor].CGColor;</div><div class="line">shapeLayer.strokeColor = [<span class="built_in">UIColor</span> orangeColor].CGColor;</div><div class="line">shapeLayer.lineCap = kCALineCapRound;</div><div class="line">shapeLayer.lineWidth = <span class="number">4.0</span>f;</div><div class="line">[<span class="keyword">self</span>.view.layer addSublayer:shapeLayer];</div><div class="line"></div><div class="line"><span class="built_in">CALayer</span> *shipLayer = [<span class="built_in">CALayer</span> layer];</div><div class="line">shipLayer.frame = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">40</span>, <span class="number">40</span>);</div><div class="line">shipLayer.position = <span class="built_in">CGPointMake</span>(<span class="number">50</span>, <span class="number">100</span>);</div><div class="line">shipLayer.contents = (__bridge <span class="keyword">id</span>)[<span class="built_in">UIImage</span> imageNamed: <span class="string">@"me"</span>].CGImage;</div><div class="line">[<span class="keyword">self</span>.view.layer addSublayer:shipLayer];</div><div class="line"></div><div class="line"><span class="built_in">CAKeyframeAnimation</span> *anim = [<span class="built_in">CAKeyframeAnimation</span> animationWithKeyPath:<span class="string">@"position"</span>];</div><div class="line">anim.path = bezierPath.CGPath;</div><div class="line">anim.duration = <span class="number">4.0</span>f;</div><div class="line"><span class="comment">// 调整它的affineTransform来对运动方向做动画</span></div><div class="line">anim.rotationMode = kCAAnimationRotateAuto;</div><div class="line">[shipLayer addAnimation:anim forKey:<span class="literal">nil</span>];</div></pre></td></tr></table></figure>
-<h2 id="组动画"><a href="#组动画" class="headerlink" title="组动画"></a>组动画</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">CAAnimationGroup</span> *group = [[<span class="built_in">CAAnimationGroup</span> alloc] init];</div><div class="line">group.animations = @[anim, anim1];</div><div class="line">group.duration = <span class="number">4.0</span>;</div><div class="line">group.repeatCount = <span class="number">1</span>;</div><div class="line">[shipLayer addAnimation:group forKey:<span class="literal">nil</span>];</div></pre></td></tr></table></figure>
-<h2 id="过渡效果"><a href="#过渡效果" class="headerlink" title="过渡效果"></a>过渡效果</h2><pre><code class="objc"><span class="built_in">CATransition</span> *tran = [<span class="built_in">CATransition</span> animation];
-tran.type = kCATransitionFade;
-tran.duration = <span class="number">2.0</span>;
-[<span class="keyword">self</span>.imgView.layer addAnimation:tran forKey:<span class="literal">nil</span>];
-<span class="keyword">self</span>.imgView.image = [<span class="built_in">UIImage</span> imageNamed:<span class="string">@"img1"</span>];
-</code></pre>
-<h3 id="隐式过渡"><a href="#隐式过渡" class="headerlink" title="隐式过渡"></a>隐式过渡</h3><p>CATransision可以对图层任何变化平滑过渡的事实使得它成为那些不好做动画的属性图层行为的理想候选。苹果当然意识到了这点，并且当设置了CALayer的content属性的时候，CATransition的确是默认的行为。但是对于视图关联的图层，或者是其他隐式动画的行为，这个特性依然是被禁用的，但是对于你自己创建的图层，这意味着对图层contents图片做的改动都会自动附上淡入淡出的动画。</p>
-<h1 id="顺序执行一系列动画方法"><a href="#顺序执行一系列动画方法" class="headerlink" title="顺序执行一系列动画方法"></a>顺序执行一系列动画方法</h1><ol>
-<li>创建所有的动画对象，均设置delegate为self</li>
-<li>把所有的动画对象放到一个array成员里面。</li>
-<li>启动第一个动画</li>
-<li>实现animationDidStop回调，在回调里面读取array剩下的动画效果，播放。</li>
-<li>这样每个动画播放完毕后，在回调里面就播放下一个动画，直到所有的动画都播放完。</li>
-</ol>
-<h1 id="画完成后不回到动画开始前的初始状态"><a href="#画完成后不回到动画开始前的初始状态" class="headerlink" title="画完成后不回到动画开始前的初始状态"></a>画完成后不回到动画开始前的初始状态</h1><p><strong><br>使用CAAnimation子类对CALayer的属性进行显示动画时，如果需要动画完成后不回到动画开始前的初始状态，可以进行以下设置：<br><code>animation.removedOnCompletion = NO;</code><br><code>animation.fillMode = KCAFillModeForwards;</code>
-</strong></p>
+          隐式动画Core Animation 在每个 run loop 周期中自动开始一次新的事务（run loop是iOS负责收集用户输入，处理定时器或者网络事件并且重新绘制屏幕的东西），即使你不显式的用[CATransaction begin]开始一次事务，任何在一次 run loop 循环中属性的改变
+          ...
 
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/13/iOS核心动画高级技巧-·-三/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -486,7 +444,7 @@ tran.duration = <span class="number">2.0</span>;
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
 
     
       <header class="post-header">
@@ -551,30 +509,14 @@ tran.duration = <span class="number">2.0</span>;
       
         
           
-            <h1 id="CATiledLayer-载入超大图片解决方案"><a href="#CATiledLayer-载入超大图片解决方案" class="headerlink" title="CATiledLayer -载入超大图片解决方案"></a>CATiledLayer -载入超大图片解决方案</h1><p><font color="red">有一次面试大疆，面试官问了这样一个问题：无人机拍摄的某张图片非常大，大到手机无法一次性加载、显示出来，如何解决？我：……</font><br>当初还不知道 <code>CATiledLayer</code> 这个类……<br><strong>介绍：</strong><br>有些时候可能需要绘制一个很大的图片，常见的例子就是一个高像素的照片或者是地球表面的详细地图。iOS应用通畅运行在内存受限的设备上，所以读取整个图片到内存中是不明智的。载入大图可能会相当地慢，那些对你看上去比较方便的做法（在主线程调用UIImage的-imageNamed:方法或者-imageWithContentsOfFile:方法）将会阻塞你的用户界面，至少会引起动画卡顿现象。</p>
-<p>能高效绘制在iOS上的图片也有一个大小限制。所有显示在屏幕上的图片最终都会被转化为OpenGL纹理，同时OpenGL有一个最大的纹理尺寸（通常是2048*2048，或4096*4096，这个取决于设备型号）。如果你想在单个纹理中显示一个比这大的图，即便图片已经存在于内存中了，你仍然会遇到很大的性能问题，因为Core Animation强制用CPU处理图片而不是更快的GPU。<br><strong><font color="red">方法</font></strong><br>服务器返回一堆小图片，客户端用<code>CATiledLayer</code>处理调用，当然可以不是一次性获取所有小图片。<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span> ()</span></div><div class="line"></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">weak</span>) <span class="keyword">IBOutlet</span> <span class="built_in">UIScrollView</span> *scrollView;</div><div class="line"></div><div class="line"><span class="keyword">@end</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)viewDidLoad</div><div class="line">&#123;</div><div class="line">    [<span class="keyword">super</span> viewDidLoad];</div><div class="line">    <span class="comment">//add the tiled layer</span></div><div class="line">    <span class="built_in">CATiledLayer</span> *tileLayer = [<span class="built_in">CATiledLayer</span> layer];￼</div><div class="line">    tileLayer.frame = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">2048</span>, <span class="number">2048</span>);</div><div class="line">    tileLayer.delegate = <span class="keyword">self</span>; </div><div class="line">    [<span class="keyword">self</span>.scrollView.layer addSublayer:tileLayer];</div><div class="line"></div><div class="line">    <span class="comment">//configure the scroll view</span></div><div class="line">    <span class="keyword">self</span>.scrollView.contentSize = tileLayer.frame.size;</div><div class="line"></div><div class="line">    <span class="comment">//draw layer</span></div><div class="line">    [tileLayer setNeedsDisplay];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)drawLayer:(<span class="built_in">CATiledLayer</span> *)layer inContext:(<span class="built_in">CGContextRef</span>)ctx</div><div class="line">&#123;</div><div class="line">    <span class="comment">//determine tile coordinate</span></div><div class="line">    <span class="built_in">CGRect</span> bounds = <span class="built_in">CGContextGetClipBoundingBox</span>(ctx);</div><div class="line">    <span class="built_in">NSInteger</span> x = floor(bounds.origin.x / layer.tileSize.width);</div><div class="line">    <span class="built_in">NSInteger</span> y = floor(bounds.origin.y / layer.tileSize.height);</div><div class="line"></div><div class="line">    <span class="comment">//load tile image</span></div><div class="line">    <span class="built_in">NSString</span> *imageName = [<span class="built_in">NSString</span> stringWithFormat: <span class="string">@"Snowman_%02i_%02i"</span>, x, y];</div><div class="line">    <span class="built_in">NSString</span> *imagePath = [[<span class="built_in">NSBundle</span> mainBundle] pathForResource:imageName ofType:<span class="string">@"jpg"</span>];</div><div class="line">    <span class="built_in">UIImage</span> *tileImage = [<span class="built_in">UIImage</span> imageWithContentsOfFile:imagePath];</div><div class="line"></div><div class="line">    <span class="comment">//draw tile</span></div><div class="line">    <span class="built_in">UIGraphicsPushContext</span>(ctx);</div><div class="line">    [tileImage drawInRect:bounds];</div><div class="line">    <span class="built_in">UIGraphicsPopContext</span>();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p><code>CATiledLayer</code>还有一个有趣的特性：在多个线程中为每个小块同时调用<code>-drawLayer:inContext:</code>方法。这就避免了阻塞用户交互而且能够利用多核心新片来更快地绘制。只有一个小块的<code>CATiledLayer</code>是实现异步更新图片视图的简单方法</p>
-<h1 id="动画·变换"><a href="#动画·变换" class="headerlink" title="动画·变换"></a>动画·变换</h1><p>实际上 UIView 的 transform 属性是一个 CGAffineTransform 类型，用于在二维空间做旋转，缩放和平移。CGAffineTransform 是一个可以和二维空间向量（例如 CGPoint ）做乘法的3X2的矩阵。<br>CALayer 同样也有一个 transform 属性，但它的类型是 CATransform3D，而不是 CGAffineTransform。</p>
-<h2 id="旋转、缩放、平移"><a href="#旋转、缩放、平移" class="headerlink" title="旋转、缩放、平移"></a>旋转、缩放、平移</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">CGAffineTransformRotate</span>(<span class="built_in">CGAffineTransform</span> t, <span class="built_in">CGFloat</span> angle)</div><div class="line"><span class="built_in">CGAffineTransformScale</span>(<span class="built_in">CGAffineTransform</span> t, <span class="built_in">CGFloat</span> sx, <span class="built_in">CGFloat</span> sy)</div><div class="line"><span class="built_in">CGAffineTransformTranslate</span>(<span class="built_in">CGAffineTransform</span> t, <span class="built_in">CGFloat</span> tx, <span class="built_in">CGFloat</span> ty)</div></pre></td></tr></table></figure>
-<p>这是可以实现在某个 CGAffineTransform 的基础上进行变换，如果是自己的 CGAffineTransform，则可实现连续变换。</p>
-<h2 id="3D变换"><a href="#3D变换" class="headerlink" title="3D变换"></a>3D变换</h2><p>和CGAffineTransform类似，CATransform3D也是一个矩阵，但是和2x3的矩阵不同，CATransform3D是一个可以在3维空间内做变换的4x4的矩阵.<br>通X.Y平面的变换类似<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">CATransform3DMakeRotation</span>(<span class="built_in">CGFloat</span> angle, <span class="built_in">CGFloat</span> x, <span class="built_in">CGFloat</span> y, <span class="built_in">CGFloat</span> z)</div><div class="line"><span class="built_in">CATransform3DMakeScale</span>(<span class="built_in">CGFloat</span> sx, <span class="built_in">CGFloat</span> sy, <span class="built_in">CGFloat</span> sz) </div><div class="line"><span class="built_in">CATransform3DMakeTranslation</span>(Gloat tx, <span class="built_in">CGFloat</span> ty, <span class="built_in">CGFloat</span> tz)</div></pre></td></tr></table></figure></p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">CATransform3D</span> transform = <span class="built_in">CATransform3DMakeRotation</span>(M_PI_4, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>);</div><div class="line"><span class="keyword">self</span>.layerView.layer.transform = transform;</div></pre></td></tr></table></figure>
-<p><strong>在旋转的时候，增加透视效果</strong><br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//create a new transform</span></div><div class="line"><span class="built_in">CATransform3D</span> transform = <span class="built_in">CATransform3DIdentity</span>;</div><div class="line"><span class="comment">//apply perspective</span></div><div class="line">transform.m34 = - <span class="number">1.0</span> / <span class="number">500.0</span>;</div><div class="line"><span class="comment">//rotate by 45 degrees along the Y axis</span></div><div class="line">transform = <span class="built_in">CATransform3DRotate</span>(transform, M_PI_4, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>);</div><div class="line"><span class="comment">//apply to layer</span></div><div class="line"><span class="keyword">self</span>.layerView.layer.transform = transform;</div></pre></td></tr></table></figure></p>
-<h1 id="CAShapeLayer"><a href="#CAShapeLayer" class="headerlink" title="CAShapeLayer"></a>CAShapeLayer</h1><p>使用<code>CAShapeLayer</code>对比<code>Core Graphics</code>直接向原始的<code>CALyer</code>的内容中绘制一个路径有以下一些优点 :</p>
-<ul>
-<li>渲染快速。CAShapeLayer使用了硬件加速，绘制同一图形会比用Core Graphics快很多。</li>
-<li>高效使用内存。一个CAShapeLayer不需要像普通CALayer一样创建一个寄宿图形，所以无论有多大，都不会占用太多的内存。</li>
-<li>不会被图层边界剪裁掉。一个CAShapeLayer可以在边界之外绘制。你的图层路径不会像在使用Core Graphics的普通CALayer一样被剪裁掉（如我们在第二章所见）。</li>
-<li>不会出现像素化。当你给CAShapeLayer做3D变换时，它不像一个有寄宿图的普通图层一样变得像素化。<h2 id="绘制3圆角1直角矩形"><a href="#绘制3圆角1直角矩形" class="headerlink" title="绘制3圆角1直角矩形"></a>绘制3圆角1直角矩形</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//define path parameters</span></div><div class="line"><span class="built_in">CGRect</span> rect = <span class="built_in">CGRectMake</span>(<span class="number">50</span>, <span class="number">50</span>, <span class="number">100</span>, <span class="number">100</span>);</div><div class="line"><span class="built_in">CGSize</span> radii = <span class="built_in">CGSizeMake</span>(<span class="number">20</span>, <span class="number">20</span>);</div><div class="line"><span class="built_in">UIRectCorner</span> corners = <span class="built_in">UIRectCornerTopRight</span> | <span class="built_in">UIRectCornerBottomRight</span> | <span class="built_in">UIRectCornerBottomLeft</span>;</div><div class="line"><span class="comment">//create path</span></div><div class="line"><span class="built_in">UIBezierPath</span> *path = [<span class="built_in">UIBezierPath</span> bezierPathWithRoundedRect:rect byRoundingCorners:corners cornerRadii:radii];</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h1 id="CATextLayer-富文本"><a href="#CATextLayer-富文本" class="headerlink" title="CATextLayer -富文本"></a>CATextLayer -富文本</h1><p><code>CATextLayer</code>是<code>CALayer</code>的子类，它以图层的形式包含了UILabel几乎所有的绘制特性，并且额外提供了一些新的特性。<br><strong><code>CATextLayer</code> 也要比 <code>UILabel</code> 渲染得快得多</strong></p>
-<h1 id="CAGradientLayer-渐变"><a href="#CAGradientLayer-渐变" class="headerlink" title="CAGradientLayer -渐变"></a>CAGradientLayer -渐变</h1><p><code>CAGradientLayer</code>是用来生成两种或更多颜色平滑渐变的。<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//create gradient layer and add it to our container view</span></div><div class="line"><span class="built_in">CAGradientLayer</span> *gradientLayer = [<span class="built_in">CAGradientLayer</span> layer];</div><div class="line">gradientLayer.frame = <span class="keyword">self</span>.containerView.bounds;</div><div class="line">[<span class="keyword">self</span>.containerView.layer addSublayer:gradientLayer];</div><div class="line"></div><div class="line"><span class="comment">//set gradient colors</span></div><div class="line">gradientLayer.colors = @[(__bridge <span class="keyword">id</span>)[<span class="built_in">UIColor</span> redColor].CGColor, (__bridge <span class="keyword">id</span>)[<span class="built_in">UIColor</span> blueColor].CGColor];</div><div class="line"></div><div class="line"><span class="comment">//set gradient start and end points</span></div><div class="line">gradientLayer.startPoint = <span class="built_in">CGPointMake</span>(<span class="number">0</span>, <span class="number">0</span>);</div><div class="line">gradientLayer.endPoint = <span class="built_in">CGPointMake</span>(<span class="number">1</span>, <span class="number">1</span>);</div></pre></td></tr></table></figure></p>
-<h2 id="多重渐变"><a href="#多重渐变" class="headerlink" title="-多重渐变"></a>-多重渐变</h2><p>默认情况下，这些颜色在空间上均匀地被渲染，但是我们可以用<code>locations</code>属性来调整空间。<code>locations</code>属性是一个浮点数值的数组（以<code>NSNumber</code>包装）。这些浮点数定义了colors属性中每个不同颜色的位置，同样的，也是以单位坐标系进行标定。0.0代表着渐变的开始，1.0代表着结束。<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//set locations</span></div><div class="line">gradientLayer.locations = @[@<span class="number">0.0</span>, @<span class="number">0.25</span>, @<span class="number">0.5</span>];</div></pre></td></tr></table></figure></p>
-<p>开源代码ReflectionView完成了一个自适应的渐变淡出效果（用CAGradientLayer和图层蒙板实现），代码见 <a href="https://github.com/nicklockwood/ReflectionView" target="_blank" rel="external">https://github.com/nicklockwood/ReflectionView</a></p>
-<h1 id="CAEAGLLayer-高性能图形绘制"><a href="#CAEAGLLayer-高性能图形绘制" class="headerlink" title="CAEAGLLayer -高性能图形绘制"></a>CAEAGLLayer -高性能图形绘制</h1><p>当iOS要处理高性能图形绘制，必要时就是OpenGL。应该说它应该是最后的杀手锏，至少对于非游戏的应用来说是的。因为相比Core Animation和UIkit框架，它不可思议地复杂。<br>它是CALayer的一个子类，用来显示任意的OpenGL图形。+</p>
+          CATiledLayer -载入超大图片解决方案有一次面试大疆，面试官问了这样一个问题：无人机拍摄的某张图片非常大，大到手机无法一次性加载、显示出来，如何解决？我：……当初还不知道 CATiledLayer 这个类……介绍：有些时候可能需要绘制一个很大的图片，常见的例子就是一个高像素的照片或者是地球
+          ...
 
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/10/iOS核心动画高级技巧-·-基础篇-二/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -610,7 +552,7 @@ tran.duration = <span class="number">2.0</span>;
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
 
     
       <header class="post-header">
@@ -675,45 +617,15 @@ tran.duration = <span class="number">2.0</span>;
       
         
           
-            <p><a href="https://www.gitbook.com/book/zsisme/ios-/details" title="《iOS核心动画高级技巧》" target="_blank" rel="external">《iOS核心动画高级技巧》源</a><br><strong>总结下读《iOS核心动画高级技巧》的收获</strong></p>
-<h3 id="point-1-UIView-与-CALayer-1"><a href="#point-1-UIView-与-CALayer-1" class="headerlink" title="point 1. UIView 与 CALayer 1"></a><em>point 1.</em> UIView 与 CALayer 1</h3><p><strong>UIView</strong> 可以处理触摸事件，可以支持基于Core Graphics绘图，可以做仿射变换（例如旋转或者缩放），或者简单的类似于滑动或者渐变的动画<br><strong>CALayer</strong> 类在概念上和UIView类似，同样也是一些被层级关系树管理的矩形块，同样也可以包含一些内容（像图片，文本或者背景色），管理子图层的位置。它们有一些方法和属性用来做动画和变换。<br><strong>不同点：</strong> CALayer不处理用户的交互</p>
-<h3 id="point-2-UIView-与-CALayer-2"><a href="#point-2-UIView-与-CALayer-2" class="headerlink" title="point 2. UIView 与 CALayer 2"></a><em>point 2.</em> UIView 与 CALayer 2</h3><p>但是为什么iOS要基于UIView和CALayer提供两个平行的层级关系呢？为什么不用一个简单的层级来处理所有事情呢？原因在于要做职责分离，这样也能避免很多重复代码。在iOS和Mac OS两个平台上，事件和用户交互有很多地方的不同，基于多点触控的用户界面和基于鼠标键盘有着本质的区别，这就是为什么iOS有UIKit和UIView，但是Mac OS有AppKit和NSView的原因。他们功能上很相似，但是在实现上有着显著的区别。</p>
-<p><strong>一些UIView没有暴露出来的CALayer的功能：</strong></p>
-<ul>
-<li>阴影，圆角，带颜色的边框</li>
-<li>3D变换</li>
-<li>非矩形范围</li>
-<li>透明遮罩</li>
-<li>多级非线性动画</li>
-</ul>
-<p><strong>当满足以下条件的时候，你可能更需要使用CALayer而不是UIView:</strong></p>
-<ul>
-<li>开发同时可以在Mac OS上运行的跨平台应用</li>
-<li>使用多种CALayer的子类（见第六章，“特殊的图层“），并且不想创建额外的UIView去包封装它们所有</li>
-<li>做一些对性能特别挑剔的工作，比如对UIView一些可忽略不计的操作都会引起显著的不同（尽管如此，你可能会直接想使用OpenGL绘图）</li>
-</ul>
-<h3 id="point-3-用-CALayer-显示一张图片"><a href="#point-3-用-CALayer-显示一张图片" class="headerlink" title="point 3. 用 CALayer 显示一张图片"></a><em>point 3.</em> 用 CALayer 显示一张图片</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">CALayer</span> *layer = [<span class="built_in">CALayer</span> layer];</div><div class="line">layer.frame = <span class="built_in">CGRectMake</span>(<span class="number">30</span>, <span class="number">120</span>, <span class="number">200</span>, <span class="number">200</span>);</div><div class="line">layer.backgroundColor = [<span class="built_in">UIColor</span> blueColor].CGColor;</div><div class="line">layer.contents = (__bridge <span class="keyword">id</span>)([<span class="built_in">UIImage</span> imageNamed:<span class="string">@"me"</span>].CGImage);</div><div class="line">[<span class="keyword">self</span>.view.layer addSublayer:layer];</div></pre></td></tr></table></figure>
-<p>CALayer与contentMode对应的属性叫做 contentsGravity,它是一个NSString类型<br><strong>contentsGravity可选的常量值有以下一些：</strong></p>
-<ul>
-<li>kCAGravityCenter</li>
-<li>kCAGravityTop</li>
-<li>kCAGravityBottom</li>
-<li>kCAGravityLeft</li>
-<li>kCAGravityRight</li>
-<li>kCAGravityTopLeft</li>
-<li>kCAGravityTopRight</li>
-<li>kCAGravityBottomLeft</li>
-<li>kCAGravityBottomRight</li>
-<li>kCAGravityResize</li>
-<li>kCAGravityResizeAspect</li>
-<li>kCAGravityResizeAspectFill<br><strong>也可以用下面的字符串：</strong><br>/* A string defining how the contents of the layer is mapped into its<br>* bounds rect. Options are `center’, `top’, `bottom’, `left’,<br>* `right’, `topLeft’, `topRight’, `bottomLeft’, `bottomRight’,<br>* `resize’, `resizeAspect’, `resizeAspectFill’. The default value is<br>* `resize’. Note that “bottom” always means “Minimum Y” and “top”<br>* always means “Maximum Y”. */<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">layer.contentsGravity = kCAGravityResizeAspect;</div><div class="line">layer.contentsGravity = <span class="string">@"resizeAspect"</span>;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="point-4-CALayer-图片-的裁剪"><a href="#point-4-CALayer-图片-的裁剪" class="headerlink" title="point 4. CALayer (图片)的裁剪"></a><em>point 4.</em> CALayer (图片)的裁剪</h3><p>默认的 contentsRect 是{0, 0, 1, 1},数值都为0~1，超出或者负数会裁剪空白填充<br><img src="/images/img1.png" alt=""><br>这个可以用在一个场景：切图。加载一张大图，然后根据 contentsRect 来切小图显示。能有效提高载入性能。web前端常用。</p>
-<h3 id="point-5-锚点"><a href="#point-5-锚点" class="headerlink" title="point 5. 锚点"></a><em>point 5.</em> 锚点</h3><p>视图的center属性和图层的position属性都指定了anchorPoint相对于父图层的位置。图层的anchorPoint通过position来控制它的frame的位置，你可以认为anchorPoint是用来移动图层的把柄。<br>说白了，就是旋转的时候以这个点旋转。效果：时钟的指针动画。</p>
-<h3 id="point-6-Hit-Testing"><a href="#point-6-Hit-Testing" class="headerlink" title="point 6. Hit Testing"></a><em>point 6.</em> Hit Testing</h3><p>CALayer并不关心任何响应链事件，所以不能直接处理触摸事件或者手势。但是可以用 <code>-containsPoint:</code> 和 <code>-hitTest:</code> 来处理事件</p>
+          《iOS核心动画高级技巧》源总结下读《iOS核心动画高级技巧》的收获
+point 1. UIView 与 CALayer 1UIView 可以处理触摸事件，可以支持基于Core Graphics绘图，可以做仿射变换（例如旋转或者缩放），或者简单的类似于滑动或者渐变的动画CALayer 类在概念上和U
+          ...
 
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/08/iOS核心动画高级技巧/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -749,7 +661,7 @@ tran.duration = <span class="number">2.0</span>;
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
 
     
       <header class="post-header">
@@ -814,18 +726,14 @@ tran.duration = <span class="number">2.0</span>;
       
         
           
-            <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>前几天项目审核给拒了，查了下原因：加密签名没有通过验证。<br>瞬间秒醒加密里面有个按照当前时间获取时间戳，加进去各种加密。好吧，审核大部分在美国。不同时区会导致获取时间戳不一样。<br>只增加了一句代码就解决了这个问题：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[dateformatter setTimeZone:[<span class="built_in">NSTimeZone</span> timeZoneWithAbbreviation:<span class="string">@"GMT+0800"</span>]];</div></pre></td></tr></table></figure></p>
-<p>GMT+0800 这个代表东八区，也就是北京时间所在时区，这样在获取格式化日期后，时间就切换到跟服务端一致的时区了，而不用管审核的手机在哪个时区。</p>
-<h2 id="说点有营养的吧"><a href="#说点有营养的吧" class="headerlink" title="说点有营养的吧"></a>说点有营养的吧</h2><p>1.什么是GMT时间，什么是UTC时间<br>2.什么是时差<br>3.NSDate对应的什么时间</p>
-<p>关于GMT时间与UTC时间这里只做简单的介绍，GMT时间称为格林尼治时间，而UTC时间则称为世界标准时间，两者在概念上非常接近，UTC时间其本质是比GMT时间更加准确的世界时间；至于什么是时差按照科学上标准将地球划分24个时区，将经度为0的地方定位世界标准时间的时区，以中国北京时间东八区为例则是UTC/GMT +8，同样洛杉矶为例子当前时区为 西八区（目前正实行夏时制，时间拨快 1 小时）UTC/GMT -7，与北京时差则为晚15个小时</p>
-<p><strong><em>上代码</em></strong><br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">NSString</span> *dateStr = <span class="string">@"2016-10-08 13:01"</span>;</div><div class="line"><span class="built_in">NSDateFormatter</span> *dateFormatter = [[<span class="built_in">NSDateFormatter</span> alloc] init];</div><div class="line">[dateFormatter setDateFormat:<span class="string">@"yyyy-MM-dd HH:mm"</span>];</div><div class="line"></div><div class="line"><span class="built_in">NSDate</span> *date = [dateFormatter dateFromString:dateStr];</div><div class="line">WHLog(<span class="string">@"date:%@"</span>, date);</div></pre></td></tr></table></figure></p>
-<p>输出结果：date:2016-10-08 05:01:00 +0000</p>
-<p>从输出的时间显示，为什么刚好相8个小时的时差<br>1.NSDate存储的时间格式为UTC时间,默认会将NSDate时间以系统当前时区（北京时区)转为UTC标准时间<br>2.NSDateFormatter的格式化时间的时区默认系统当前时区<br>3.事实上代码中制定的字符串时间已经制定为系统当前时区（北京时区）</p>
-<p><strong>切换时区只需要修改 dateFormatter 的 timeZone</strong></p>
-<h2 id="如何获取GMT时间"><a href="#如何获取GMT时间" class="headerlink" title="如何获取GMT时间"></a>如何获取GMT时间</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//系统时区</span></div><div class="line"><span class="built_in">NSTimeZone</span> *zone = [<span class="built_in">NSTimeZone</span> systemTimeZone];</div><div class="line"><span class="built_in">NSData</span> *data = [zone data];</div><div class="line"></div><div class="line"><span class="comment">//时间缩写</span></div><div class="line"><span class="built_in">NSString</span> *abbStr = [zone abbreviation];</div><div class="line"><span class="built_in">NSLog</span>(<span class="string">@"abbStr:%@"</span>,abbStr);</div><div class="line"></div><div class="line"><span class="comment">//当地时区</span></div><div class="line"><span class="built_in">NSTimeZone</span> *localTime = [<span class="built_in">NSTimeZone</span> localTimeZone];</div><div class="line"><span class="built_in">NSLog</span>(<span class="string">@"localTime:%@"</span>,localTime);</div><div class="line"></div><div class="line"><span class="comment">//和格林尼治时间差</span></div><div class="line"><span class="built_in">NSInteger</span> timeOff = [zone secondsFromGMT];</div><div class="line"></div><div class="line"><span class="comment">//时差转化</span></div><div class="line"><span class="built_in">NSDate</span> *timeOffDate = [date dateByAddingTimeInterval:timeOff];</div><div class="line"><span class="built_in">NSLog</span>(<span class="string">@"timeOffDate:%@"</span>,timeOffDate);</div></pre></td></tr></table></figure>
-<p>timeOffDate 就是正儿八经的“时间”了</p>
+          问题前几天项目审核给拒了，查了下原因：加密签名没有通过验证。瞬间秒醒加密里面有个按照当前时间获取时间戳，加进去各种加密。好吧，审核大部分在美国。不同时区会导致获取时间戳不一样。只增加了一句代码就解决了这个问题：1[dateformatter setTimeZone:[NSTimeZone timeZ
+          ...
 
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/10/08/TimeZone/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -861,7 +769,7 @@ tran.duration = <span class="number">2.0</span>;
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
 
     
       <header class="post-header">
@@ -926,9 +834,15 @@ tran.duration = <span class="number">2.0</span>;
       
         
           
-            <p><strong>iOS如何写 Hello World ~</strong><br><code>NSLog(@&quot;Hello World !&quot;);</code><br>没错，这就是我的第一篇blog，就是这么酷 !</p>
+          iOS如何写 Hello World ~NSLog(@&quot;Hello World !&quot;);没错，这就是我的第一篇blog，就是这么酷 !
 
           
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/09/28/test-post/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -986,7 +900,7 @@ tran.duration = <span class="number">2.0</span>;
       
 
       <section class="site-overview sidebar-panel  sidebar-panel-active ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/logo.jpg"
                alt="yd.Z" />
@@ -1017,6 +931,17 @@ tran.duration = <span class="number">2.0</span>;
         
 
         <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/alwaysdb" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
           
         </div>
 
@@ -1114,28 +1039,28 @@ tran.duration = <span class="number">2.0</span>;
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
 
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
 
 
 
   
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
 
 
 
@@ -1263,6 +1188,9 @@ tran.duration = <span class="number">2.0</span>;
 
 
   
+
+  
+
 
 </body>
 </html>
